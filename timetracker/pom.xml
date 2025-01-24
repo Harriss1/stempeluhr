@@ -12,7 +12,7 @@
 	<artifactId>timetracker</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>timetracker</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Zeiterfassung für einen Arbeitnehmer mittels REST-API</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -54,6 +54,17 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		
+		<dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <scope>test</scope>
+        </dependency>
 	</dependencies>
 
 	<build>
@@ -82,6 +93,12 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <artifactId>maven-failsafe-plugin</artifactId>
+            </plugin>
 		</plugins>
 	</build>
 

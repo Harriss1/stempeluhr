@@ -12,19 +12,19 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "person")
-@Getter
 public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long id;
 
-    @Setter
-    private String firstname;
+    @Getter @Setter
+    private String firstName;
 
     protected Employee() {}
     
     public Employee(String firstName) {
-    	this.firstname = firstName;
+    	this.firstName = firstName;
     }
     
     @Override
@@ -35,11 +35,11 @@ public class Employee {
       if (!(o instanceof Employee))
         return false;
       Employee employee = (Employee) o;
-      return Objects.equals(this.id, employee.id) && Objects.equals(this.firstname, employee.firstname);
+      return Objects.equals(this.id, employee.id) && Objects.equals(this.firstName, employee.firstName);
     }
     
     @Override
     public int hashCode() {
-      return Objects.hash(this.id, this.firstname);
+      return Objects.hash(this.id, this.firstName);
     }
 }

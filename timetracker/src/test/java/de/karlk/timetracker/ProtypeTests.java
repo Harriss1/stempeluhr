@@ -1,7 +1,9 @@
 package de.karlk.timetracker;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,10 +14,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import lombok.extern.slf4j.Slf4j;
+
 @TestPropertySource(
 		  locations = "classpath:application-integrationtest.properties")
 @ExtendWith(SpringExtension.class)
 @DataJpaTest
+@Slf4j
 public class ProtypeTests {
     @Autowired
     private TestEntityManager entityManager;
@@ -31,7 +36,23 @@ public class ProtypeTests {
 	
 	@ParameterizedTest
 	@ValueSource(strings = {"Max", "Sarah"})
-    void canCreateAndReadEmployee(String forename) {
-        assertTrue(true, "Datenbank sollte ansteuerbar sein");
+    void canCreateAndReadEmployee(String firstName) {
+		Employee expectedEmployee = new Employee(firstName);
+
+		employeeRepository.save(expectedEmployee);
+		employeeRepository.flush();
+//		entityManager.persist(expectedEmployee);
+//		entityManager.flush();
+		
+		Employee actualEmployee = employeeRepository.findByFirstName(firstName);
+		log.info("gefundener Mitarbeiter: " + actualEmployee.getFirstName());
+        assertEquals(expectedEmployee.getFirstName(), actualEmployee.getFirstName(), "Die Vornamen sollten übereinstimmen");
+    }
+	
+	@ParameterizedTest
+	@ValueSource(strings = {"Marius", "Nadine"})
+    void missingEmployeeIsNull(String firstName) {
+		Employee actualEmployee = employeeRepository.findByFirstName(firstName);
+        assertNull(actualEmployee, "Der Employee exisitert nicht, weshalb das Objekt null sein müsste");
     }
 }

@@ -2,8 +2,8 @@ package de.karlk.timetracker;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -26,7 +26,7 @@ public class ProtypeTests {
     private TestEntityManager entityManager;
     
     @Autowired
-    private UserRepository employeeRepository;
+    private UserRepository userRepository;
     
 	@ParameterizedTest
 	@ValueSource(strings = {"timetracking", "timetracker-prototype"})
@@ -36,23 +36,21 @@ public class ProtypeTests {
 	
 	@ParameterizedTest
 	@ValueSource(strings = {"Max", "Sarah"})
-    void canCreateAndReadEmployee(String firstName) {
-		User expectedEmployee = new User(firstName);
+    void canCreateAndReadUser(String name) {
+		User expectedUser = new User(name);
 
-		employeeRepository.save(expectedEmployee);
-		employeeRepository.flush();
-//		entityManager.persist(expectedEmployee);
-//		entityManager.flush();
+		userRepository.save(expectedUser);
+		userRepository.flush();
 		
-		User actualEmployee = employeeRepository.findByFirstName(firstName);
-		log.info("gefundener Mitarbeiter: " + actualEmployee.getFirstName());
-        assertEquals(expectedEmployee.getFirstName(), actualEmployee.getFirstName(), "Die Vornamen sollten übereinstimmen");
+		User actualUser = userRepository.findByName(name);
+		log.info("gefundener Mitarbeiter: " + actualUser.getName());
+        assertEquals(expectedUser.getName(), actualUser.getName(), "Die Benutzernamen sollten übereinstimmen.");
     }
 	
 	@ParameterizedTest
 	@ValueSource(strings = {"Marius", "Nadine"})
-    void missingEmployeeIsNull(String firstName) {
-		User actualEmployee = employeeRepository.findByFirstName(firstName);
-        assertNull(actualEmployee, "Der Employee exisitert nicht, weshalb das Objekt null sein müsste");
+    void missingEmployeeIsNull(String name) {
+		User actualEmployee = userRepository.findByName(name);
+        assertNull(actualEmployee, "Das Objekt müsste null sein, da der Benutzer nicht existiert.");
     }
 }

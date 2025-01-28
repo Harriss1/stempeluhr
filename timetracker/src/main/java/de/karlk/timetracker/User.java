@@ -2,6 +2,7 @@ package de.karlk.timetracker;
 
 import java.util.Objects;
 
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -21,10 +22,18 @@ public class User {
     @Getter @Setter
     private String name;
 
+    @Getter @Setter @Nullable
+    private Employee employee;
+
     protected User() {}
     
     public User(String name) {
     	this.name = name;
+    }
+    
+    public User(String name, Employee employee) {
+    	this.name = name;
+    	this.employee = employee;
     }
     
     @Override

@@ -26,7 +26,7 @@ public class ProtypeTests {
     private TestEntityManager entityManager;
     
     @Autowired
-    private EmployeeRepository employeeRepository;
+    private UserRepository employeeRepository;
     
 	@ParameterizedTest
 	@ValueSource(strings = {"timetracking", "timetracker-prototype"})
@@ -37,14 +37,14 @@ public class ProtypeTests {
 	@ParameterizedTest
 	@ValueSource(strings = {"Max", "Sarah"})
     void canCreateAndReadEmployee(String firstName) {
-		Employee expectedEmployee = new Employee(firstName);
+		User expectedEmployee = new User(firstName);
 
 		employeeRepository.save(expectedEmployee);
 		employeeRepository.flush();
 //		entityManager.persist(expectedEmployee);
 //		entityManager.flush();
 		
-		Employee actualEmployee = employeeRepository.findByFirstName(firstName);
+		User actualEmployee = employeeRepository.findByFirstName(firstName);
 		log.info("gefundener Mitarbeiter: " + actualEmployee.getFirstName());
         assertEquals(expectedEmployee.getFirstName(), actualEmployee.getFirstName(), "Die Vornamen sollten übereinstimmen");
     }
@@ -52,7 +52,7 @@ public class ProtypeTests {
 	@ParameterizedTest
 	@ValueSource(strings = {"Marius", "Nadine"})
     void missingEmployeeIsNull(String firstName) {
-		Employee actualEmployee = employeeRepository.findByFirstName(firstName);
+		User actualEmployee = employeeRepository.findByFirstName(firstName);
         assertNull(actualEmployee, "Der Employee exisitert nicht, weshalb das Objekt null sein müsste");
     }
 }

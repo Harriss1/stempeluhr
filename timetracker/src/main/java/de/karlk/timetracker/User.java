@@ -11,35 +11,34 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "person")
-public class Employee {
+@Table(name = "user")
+public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
     private Long id;
 
     @Getter @Setter
-    private String firstName;
+    private String name;
 
-    protected Employee() {}
+    protected User() {}
     
-    public Employee(String firstName) {
-    	this.firstName = firstName;
+    public User(String name) {
+    	this.name = name;
     }
     
     @Override
     public boolean equals(Object o) {
-
       if (this == o)
         return true;
-      if (!(o instanceof Employee))
+      if (!(o instanceof User))
         return false;
-      Employee employee = (Employee) o;
-      return Objects.equals(this.id, employee.id) && Objects.equals(this.firstName, employee.firstName);
+      User user = (User) o;
+      return Objects.equals(this.id, user.id) && Objects.equals(this.name, user.name);
     }
     
     @Override
     public int hashCode() {
-      return Objects.hash(this.id, this.firstName);
+      return Objects.hash(this.id, this.name);
     }
 }

@@ -16,11 +16,11 @@ public class TimetrackerApplication {
 	}
 
 	@Bean
-	CommandLineRunner createDemoUser(EmployeeRepository repository) {
+	CommandLineRunner createDemoUser(UserRepository repository) {
 		return (args) -> {
 			// save a few customers
-			repository.saveAndFlush(new Employee("Jack"));
-			repository.saveAndFlush(new Employee("Jasmin"));
+			repository.saveAndFlush(new User("Jack"));
+			repository.saveAndFlush(new User("Jasmin"));
 
 			// fetch all customers
 			log.info("Customers found with findAll():");

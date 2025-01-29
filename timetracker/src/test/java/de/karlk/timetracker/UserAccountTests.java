@@ -27,7 +27,13 @@ import lombok.extern.slf4j.Slf4j;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Slf4j
+/**
+ * Test of Account creation, lookup and relationship between Employee.
+ * 
+ * <p>For the tasks goals it's right now not required to make a full CRUD-Test.
+ */
 public class UserAccountTests {
+	
     @Autowired
     private TestEntityManager entityManager;
     
@@ -74,13 +80,17 @@ public class UserAccountTests {
 		entityManager.flush();
 		entityManager.clear();
 		
-		List<Employee> result = employeeRepository.findByFirstName("Leonie");
-        assertTrue(result.size() > 0, "Der soeben persistierte Mitarbeiter sollte in der Datenbank existieren.");
+		List<Employee> resultEmployees = employeeRepository.findByFirstName("Leonie");
+        assertTrue(resultEmployees.size() > 0, "Der soeben persistierte Mitarbeiter sollte in der Datenbank existieren.");
         
-        Employee actual = result.get(0);
+        Employee actual = resultEmployees.get(0);
         assertNotNull(actual.getUserAccount(), "Dem Mitarbeiter sollte ein Account assoziert worden sein.");
         
+        // call relationship from employee to account 
         assertEquals(training.getName(), actual.getUserAccount().getName(), "Die Benutzernamen sollten übereinstimmen.");
+        
+        // call relationship from account to employee
+        assertEquals(training.getEmployee(), actual, "Objektinstanzen sollten übereinstimmen");
     }
     
 	public void setupTrainingAccount() {
@@ -89,8 +99,6 @@ public class UserAccountTests {
 		UserAccount training = new UserAccount("training");
 		training.setEmployee(ina);
 		userRepository.save(training);
-		
 	}
-
 
 }

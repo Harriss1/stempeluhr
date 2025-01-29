@@ -13,8 +13,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Table(name = "work_session")
+//@Entity
+//@Table(name = "work_session")
 public class WorkSession {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

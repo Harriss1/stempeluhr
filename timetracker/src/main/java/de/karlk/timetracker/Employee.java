@@ -29,7 +29,7 @@ public class Employee {
 	private String lastName;
 	
 	@OneToOne(mappedBy = "employee")
-	private User user;
+	private UserAccount user;
 
 //	@Getter
 //	@Setter

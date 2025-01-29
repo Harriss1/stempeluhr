@@ -14,8 +14,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "user")
-public class User {
+@Table(name = "user_account")
+public class UserAccount {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Getter
@@ -31,13 +31,13 @@ public class User {
 	@JoinColumn(name = "employee_id")
     private Employee employee;
 
-    protected User() {}
+    protected UserAccount() {}
     
-    public User(String name) {
+    public UserAccount(String name) {
     	this.name = name;
     }
     
-    public User(String name, Employee employee) {
+    public UserAccount(String name, Employee employee) {
     	this.name = name;
     	this.employee = employee;
     }
@@ -46,14 +46,21 @@ public class User {
     public boolean equals(Object o) {
       if (this == o)
         return true;
-      if (!(o instanceof User))
+      if (!(o instanceof UserAccount))
         return false;
-      User user = (User) o;
+      UserAccount user = (UserAccount) o;
       return Objects.equals(this.id, user.id) && Objects.equals(this.name, user.name);
     }
     
     @Override
     public int hashCode() {
       return Objects.hash(this.id, this.name);
+    }
+    
+    @Override
+    public String toString() {
+    	return employee != null
+    			? "{username:" + name+ "},{employee:'"+employee.getFirstName() + " " + employee.getLastName() + "'}" 
+    			: "{username:" + name +"},{no employee associated}";
     }
 }

@@ -37,12 +37,12 @@ public class ProtypeTests {
 	@ParameterizedTest
 	@ValueSource(strings = {"Max", "Sarah"})
     void canCreateAndReadUser(String name) {
-		User expectedUser = new User(name);
+		UserAccount expectedUser = new UserAccount(name);
 
 		userRepository.save(expectedUser);
 		userRepository.flush();
 		
-		User actualUser = userRepository.findByName(name);
+		UserAccount actualUser = userRepository.findByName(name);
 		log.info("gefundener Mitarbeiter: " + actualUser.getName());
         assertEquals(expectedUser.getName(), actualUser.getName(), "Die Benutzernamen sollten übereinstimmen.");
     }
@@ -50,7 +50,7 @@ public class ProtypeTests {
 	@ParameterizedTest
 	@ValueSource(strings = {"Marius", "Nadine"})
     void missingEmployeeIsNull(String name) {
-		User actualEmployee = userRepository.findByName(name);
+		UserAccount actualEmployee = userRepository.findByName(name);
         assertNull(actualEmployee, "Das Objekt müsste null sein, da der Benutzer nicht existiert.");
     }
 }

@@ -1,8 +1,8 @@
 package de.karlk.timetracker;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-interface UserRepository extends JpaRepository<User, Long> {
+interface UserRepository extends JpaRepository<UserAccount, Long> {
 
-	User findByName(String name);
+	UserAccount findByName(String name);
 
 }

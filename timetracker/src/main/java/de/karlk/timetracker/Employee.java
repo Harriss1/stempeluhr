@@ -2,11 +2,12 @@ package de.karlk.timetracker;
 
 import java.util.Objects;
 
-import de.karlk.timetracker.measurements.WorkSession;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,13 +27,17 @@ public class Employee {
 	@Getter
 	@Setter
 	private String lastName;
+	
+	@OneToOne(mappedBy = "employee")
+	private User user;
 
-	@Getter
-	@Setter
-	/**
-	 * allows the creation of rules to forbid new worksessions if one is active for this employee
-	 */
-	private WorkSession activeWorkSession; 	
+//	@Getter
+//	@Setter
+//	@Nullable
+//	/**
+//	 * allows the creation of rules to forbid new worksessions if one is active for this employee
+//	 */
+//	private WorkSession activeWorkSession; 	
 
 	protected Employee() {
 	}

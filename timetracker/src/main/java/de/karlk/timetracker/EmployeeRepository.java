@@ -3,6 +3,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 interface EmployeeRepository extends JpaRepository<User, Long> {
 
-	User findByFirstName(String name);
+	Employee findByFirstName(String firstName);
 
 }

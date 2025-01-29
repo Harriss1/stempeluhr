@@ -7,6 +7,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,7 +24,11 @@ public class User {
     @Getter @Setter
     private String name;
 
-    @Getter @Setter @Nullable
+    @Getter @Setter 
+    @Nullable
+    @OneToOne
+	// User is the owning side of the relationship on purpose, so one user is only allowed to timestamp for one Employee
+	@JoinColumn(name = "employee_id")
     private Employee employee;
 
     protected User() {}

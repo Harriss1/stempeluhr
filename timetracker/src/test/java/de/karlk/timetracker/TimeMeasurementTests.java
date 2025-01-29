@@ -1,5 +1,8 @@
 package de.karlk.timetracker;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,6 +14,8 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import de.karlk.timetracker.measurement.WorkSession;
+import de.karlk.timetracker.measurement.WorkSessionService;
 import lombok.extern.slf4j.Slf4j;
 
 @TestPropertySource(
@@ -19,6 +24,9 @@ import lombok.extern.slf4j.Slf4j;
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Slf4j
+/**
+ * Zeitmessungen werden im TTD-Stil implementiert
+ */
 public class TimeMeasurementTests {
 	
 	@Autowired
@@ -29,6 +37,9 @@ public class TimeMeasurementTests {
     
     @Autowired
     private EmployeeRepository employeeRepository;
+    
+    @Autowired
+    WorkSessionService sessionService;
     
     private static final String TRAINING_ACCOUNT_NAME = "training_time_measurements";
     
@@ -52,8 +63,27 @@ public class TimeMeasurementTests {
     }
     
     @Test
-    void canStartAMeasurement() {
+    void canStartAMeasurement_andCheckDuration() throws InterruptedException {
     	Employee employee = getTrainingAccount().getEmployee();
-    	log.info(employee.getUserAccount().toString());
+    	
+    	WorkSession session = sessionService.createAndStartWorkSessionFor(employee);
+    	assertNotNull(session, "WorkSession sollte instanziiert worden sein");
+    	assertNotNull(session.getEmployee(), "WorkSession sollte einem Mitarbeiter zugeordnet sein");
+    	Thread.sleep(4000);
+    	assertTrue(session.getElapsedDuration().toSeconds() > 2,"Es sollte mehr als 2 Sekunden Dauer gemessen werden.");
+    	assertTrue(session.getElapsedDuration().toSeconds() < 6,"Es sollten weniger als 6 Sekunden Dauer gemessen werden.");
+    }
+    
+
+    @Test
+    @Rollback(false)
+    void canFinishAMeasurment_andCheckDuration() throws InterruptedException {
+    	Employee employee = getTrainingAccount().getEmployee();
+    	
+    	WorkSession session = sessionService.createAndStartWorkSessionFor(employee);
+    	Thread.sleep(7000);
+    	sessionService.finishWorkSession(session);
+    	assertTrue(session.getTotalDuration().toSeconds() > 5,"Es sollte mehr als 5 Sekunden Dauer gemessen werden.");
+    	assertTrue(session.getTotalDuration().toSeconds() < 9,"Es sollten weniger als 9 Sekunden Dauer gemessen werden.");
     }
 }

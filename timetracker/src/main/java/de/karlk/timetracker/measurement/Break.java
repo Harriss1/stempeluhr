@@ -16,7 +16,7 @@ import lombok.Setter;
  */
 //@Entity
 //@Table(name = "break")
-public class Break {
+class Break {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Getter

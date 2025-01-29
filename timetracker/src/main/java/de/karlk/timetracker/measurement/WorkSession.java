@@ -51,6 +51,11 @@ public class WorkSession  implements Serializable {
 	
 	protected WorkSession() {}
 	
+	/**
+	 * starts the measurment of time
+	 *  
+	 * @param employee
+	 */
 	public WorkSession(Employee employee) {
 		this.employee = employee;
 		this.startTimeStamp = ZonedDateTime.now();
@@ -71,7 +76,15 @@ public class WorkSession  implements Serializable {
 		this.breakDuration = legalShiftType.getLegalBreakDuration();
 	}
 	
+	public Duration getElapsedDuration() {
+		long start = startTimeStamp.toEpochSecond();
+		return Duration.ofSeconds(ZonedDateTime.now().toEpochSecond() - start);
+	}
+	
 	public Duration getTotalDuration() {
+		if(endTimeStamp == null) {
+			throw new IllegalStateException("Die Gesamtzeit kann erst nach Beendigung der Schicht ermittelt werden.");
+		}
 		long end = endTimeStamp.toEpochSecond();
 		long start = startTimeStamp.toEpochSecond();
 		return Duration.ofSeconds(end - start);

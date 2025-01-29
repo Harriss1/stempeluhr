@@ -36,7 +36,6 @@ public class WorkSession  implements Serializable {
 	private Employee employee;
 	
 	@Getter
-	@Setter
 	private ZonedDateTime startTimeStamp; // not sure if this ZonedDateTime class is supported by jpa and how it works
 	
 	@Getter
@@ -64,6 +63,13 @@ public class WorkSession  implements Serializable {
 	public void setEndTimeStamp(ZonedDateTime time) {
 		this.endTimeStamp=time;
 		manageBreakDuration();
+	}
+	
+	public void setStartTimeStamp(ZonedDateTime time) {
+		this.startTimeStamp = time;
+		if(endTimeStamp != null) {
+			manageBreakDuration();
+		}
 	}
 	
 	public void finishNow() {

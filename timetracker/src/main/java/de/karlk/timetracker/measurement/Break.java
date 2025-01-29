@@ -1,4 +1,4 @@
-package de.karlk.timetracker.measurements;
+package de.karlk.timetracker.measurement;
 
 import java.time.ZonedDateTime;
 
@@ -12,7 +12,7 @@ import lombok.Setter;
 /**
  * Idee um auch zu erlauben Pausenzeiten einzupflegen.
  * 
- * <p>Meines Erachtens nach ist dies aber zu umständlich.
+ * <p>Meines Erachtens nach ist dies aber zusätzlicher Zeitaufwand und das Fertigstellen der Hauptaufgaben hat Vorrang.
  */
 //@Entity
 //@Table(name = "break")

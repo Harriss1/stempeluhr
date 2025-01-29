@@ -1,10 +1,10 @@
-package de.karlk.timetracker;
+package de.karlk.timetracker.measurement;
 
 import java.io.Serializable;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 
-import de.karlk.timetracker.measurements.LegalShiftType;
+import de.karlk.timetracker.Employee;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
@@ -17,9 +17,11 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
 @Entity
 @Table(name = "work_session")
+@Slf4j
 public class WorkSession  implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

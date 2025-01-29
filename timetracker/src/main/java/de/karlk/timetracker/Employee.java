@@ -3,6 +3,7 @@ package de.karlk.timetracker;
 import java.util.List;
 import java.util.Objects;
 
+import de.karlk.timetracker.measurement.WorkSession;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

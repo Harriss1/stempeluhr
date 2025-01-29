@@ -1,4 +1,4 @@
-package de.karlk.timetracker;
+package de.karlk.timetracker.measurement;
 
 import java.time.ZonedDateTime;
 

@@ -9,9 +9,10 @@ import org.springframework.stereotype.Service;
 
 import de.karlk.timetracker.Employee;
 import de.karlk.timetracker.EmployeeRepository;
-import de.karlk.timetracker.UserAccount;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 class WorkSessionServiceImpl implements WorkSessionService {
 
 	@Autowired
@@ -38,9 +39,20 @@ class WorkSessionServiceImpl implements WorkSessionService {
 	}
 
 	@Override
-	public Duration calculateNetWorkDurationBetween(ZonedDateTime start, ZonedDateTime end) {
-		// TODO Auto-generated method stub
-		return null;
+	public Duration calculateNetWorkDurationBetween(ZonedDateTime start, ZonedDateTime end, Employee employee) {
+		log.info("SUCHE ZWISCHEN DATUMSANGABEN");
+		List<WorkSession> sessions = workSessionRepo.findByStartTimeStampAfterAndEndTimeStampBeforeAndEmployee(start, end, employee);
+		Duration duration = Duration.ZERO;
+		if(sessions.size() == 0) {
+			log.warn("keine Einträge im Zeitraum {} - {} gefunden", start, end);
+			return duration;
+		}
+		for(var session : sessions) {
+			log.info("session net dur:" + session.getNetDuration().toString());
+			duration = duration.plus(session.getNetDuration());
+		}
+		log.info("total dur:" + duration.toString());
+		return duration;
 	}
 
 	@Override

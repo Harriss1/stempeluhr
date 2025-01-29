@@ -13,7 +13,7 @@ public interface WorkSessionService {
 
 	void saveWorkSession(WorkSession session);
 
-	Duration calculateNetWorkDurationBetween(ZonedDateTime start, ZonedDateTime end);
+	Duration calculateNetWorkDurationBetween(ZonedDateTime start, ZonedDateTime end, Employee employee);
 
 	WorkSession findFirstWorkSessionAfter(ZonedDateTime searchStartingPoint, Employee employee);
 }

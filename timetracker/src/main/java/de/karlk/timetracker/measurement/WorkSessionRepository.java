@@ -13,4 +13,7 @@ interface WorkSessionRepository extends JpaRepository<WorkSession, Long> {
 	
 	List<WorkSession> findByStartTimeStampAfterAndEmployeeOrderByStartTimeStampAsc(ZonedDateTime searchStartingPoint, Employee employee);
 
+	List<WorkSession> findByStartTimeStampAfterAndEndTimeStampBeforeAndEmployee(ZonedDateTime start, ZonedDateTime end,
+			Employee employee);
+
 }

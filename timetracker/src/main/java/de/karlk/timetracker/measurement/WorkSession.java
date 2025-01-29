@@ -95,4 +95,8 @@ public class WorkSession  implements Serializable {
 		long start = startTimeStamp.toEpochSecond();
 		return Duration.ofSeconds(end - start);
 	}
+
+	public Duration getNetDuration() {
+		return getTotalDuration().minus(breakDuration);
+	}
 }

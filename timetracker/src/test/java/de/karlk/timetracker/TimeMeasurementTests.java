@@ -9,6 +9,7 @@ import java.time.ZonedDateTime;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -85,7 +86,6 @@ public class TimeMeasurementTests {
 	}
 
 	@Test
-	@Rollback(false)
 	void finishAMeasurment_andCheckDuration() throws InterruptedException {
 		var employee = getTrainingAccount().getEmployee();
 
@@ -98,9 +98,8 @@ public class TimeMeasurementTests {
 	}
 
 	@Test
-	@Rollback(false)
-	/**
-	 *  preventing rollbacks in this class is temporary helpful as long as the testdata is quite shallow
+	/*
+	 *  preventing rollbacks in this class was temporary helpful as long as the testdata is quite shallow
 	 * 
 	 *  this test only showed a failure, because another dataset messed up the result of an incomplete repository search method
 	 */
@@ -154,29 +153,33 @@ public class TimeMeasurementTests {
 	    );
 	}
 
-//    @Test
-//    @Rollback(false)
-//    void sumUpMultipleMeasurmentsOfOneEmployee() throws InterruptedException {
-//		var employee = getTrainingAccount().getEmployee();
-//    	createTenMeasurementsFor(employee);
-//    	
-//    	ZonedDateTime start = null;
-//    	ZonedDateTime end = null;
-//    	Duration duration = sessionService.calculateNetWorkDurationBetween(start, end);
-//    }
+    @Test
+    @Rollback(false)
+    void sumUpMultipleWorkSessionsOfOneEmployee_between() throws InterruptedException {
+		var employee = getTrainingAccount().getEmployee();
+    	int daysSinceStart = 9;
+		createAMeasurementForEachDaySince(daysSinceStart, employee);
+    	
+    	ZonedDateTime start = ZonedDateTime.now().minusDays(daysSinceStart).minusMinutes(1);
+    	ZonedDateTime end = ZonedDateTime.now().minusDays(2);
+    	Duration duration = sessionService.calculateNetWorkDurationBetween(start, end, employee);
+    	log.info(duration.toString());
+    	assertTrue(duration.toHours() > 35, "das Netto Ergebnis sollte ungefähr über 35 Arbeitsstunden liegen");
+    }
 
 	/**
-	 * Creates in interval of 1 hour 10 worksessions, climbing upwards from 10 days
+	 * Creates in interval of 1 hour the given amount of worksessions, climbing upwards from amount of days
 	 * ago to current date
 	 * 
 	 * <p>
-	 * starts at a duration of 1 minute and ends at a duration of 10 hours and 1
-	 * minute
+	 * starts at a duration of 1 minute and ends at a duration of given days in hours and 1 minute
+	 * 
+	 * <p>because of this behavior more than 15 days would not make sense
 	 * 
 	 * @param employee
 	 */
-	private void createTenMeasurementsFor(Employee employee) {
-		for (int daysBack = 9; daysBack >= 0; daysBack--) {
+	private void createAMeasurementForEachDaySince(int daysAgo, Employee employee) {
+		for (int daysBack = daysAgo; daysBack >= 0; daysBack--) {
 			var session = sessionService.createAndStartWorkSessionFor(employee);
 			sessionService.finishAndSaveWorkSession(session);
 

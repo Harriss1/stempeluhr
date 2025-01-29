@@ -138,6 +138,10 @@ public class TimeMeasurementTests {
 				"Die erwartete Pausenlänge (in Minuten) sollte übereinstimmen");
 	}
 	
+	/**
+	 * test data set includes all boundary values plus one hour above and below (zweiwertige Grenzwertprüfung)
+	 * @return
+	 */
 	static Stream<Arguments> getTestDataShiftDurations() {
 	    return Stream.of(
 	        Arguments.of(Duration.ofHours(4), LegalShiftType.NO_BREAK.getLegalBreakDuration()),

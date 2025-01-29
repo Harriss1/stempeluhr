@@ -11,6 +11,6 @@ import de.karlk.timetracker.Employee;
 @Repository
 interface WorkSessionRepository extends JpaRepository<WorkSession, Long> {
 	
-	List<WorkSession> findFirstByStartTimeStampAfterAndEmployee(ZonedDateTime searchStartingPoint, Employee employee);
+	List<WorkSession> findByStartTimeStampAfterAndEmployeeOrderByStartTimeStampAsc(ZonedDateTime searchStartingPoint, Employee employee);
 
 }

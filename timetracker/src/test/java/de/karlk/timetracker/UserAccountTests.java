@@ -51,7 +51,7 @@ public class UserAccountTests {
 		userRepository.save(expectedUser);
 		userRepository.flush();
 		
-		UserAccount actualUser = userRepository.findByName(name);
+		UserAccount actualUser = userRepository.findByName(name).get(0);
 		log.info("gefundener Mitarbeiter: " + actualUser.getName());
         assertEquals(expectedUser.getName(), actualUser.getName(), "Die Benutzernamen sollten übereinstimmen.");
     }
@@ -59,8 +59,9 @@ public class UserAccountTests {
 	@ParameterizedTest
 	@ValueSource(strings = {"Marius", "Nadine"})
     void missingEmployeeIsNull(String name) {
-		UserAccount actualUser = userRepository.findByName(name);
-        assertNull(actualUser, "Das Objekt müsste null sein, da der Benutzer nicht existiert.");
+		int actualSize = userRepository.findByName(name).size();
+		int expectedSize = 0;
+        assertEquals(expectedSize, actualSize, "Der Benutzer dürfte nicht existieren.");
     }
 	
 	@Test
@@ -74,7 +75,7 @@ public class UserAccountTests {
 		Employee employee = new Employee("Leonie", "Lannieh");
 		employeeRepository.save(employee);
 		
-		UserAccount training = userRepository.findByName("account_expects_employee");
+		UserAccount training = userRepository.findByName("account_expects_employee").get(0);
 		training.setEmployee(employee);
 		entityManager.persist(training);
 		entityManager.flush();
@@ -93,12 +94,6 @@ public class UserAccountTests {
         assertEquals(training.getEmployee(), actual, "Objektinstanzen sollten übereinstimmen");
     }
     
-	public void setupTrainingAccount() {
-		Employee ina = new Employee("Ina", "Zinn");
-		employeeRepository.save(ina);
-		UserAccount training = new UserAccount("training");
-		training.setEmployee(ina);
-		userRepository.save(training);
-	}
+
 
 }

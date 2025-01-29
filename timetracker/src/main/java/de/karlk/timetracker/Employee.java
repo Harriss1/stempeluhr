@@ -30,8 +30,9 @@ public class Employee {
 	@Setter
 	private String lastName;
 	
+	@Getter
 	@OneToOne(mappedBy = "employee")
-	private UserAccount user;
+	private UserAccount userAccount;
 	
 	@Getter
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")

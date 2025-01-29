@@ -3,6 +3,7 @@ package de.karlk.timetracker;
 import java.util.Objects;
 
 import jakarta.annotation.Nullable;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -22,6 +23,7 @@ public class UserAccount {
     private Long id;
 
     @Getter @Setter
+    @Column(unique=true)
     private String name;
 
     @Getter @Setter 

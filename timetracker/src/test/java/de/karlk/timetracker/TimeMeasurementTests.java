@@ -1,15 +1,19 @@
 package de.karlk.timetracker;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -87,7 +91,7 @@ public class TimeMeasurementTests {
 
 		var session = sessionService.createAndStartWorkSessionFor(employee);
 		Thread.sleep(7000);
-		sessionService.finishWorkSession(session);
+		sessionService.finishAndSaveWorkSession(session);
 		assertTrue(session.getTotalDuration().toSeconds() > 5, "Es sollte mehr als 5 Sekunden Dauer gemessen werden.");
 		assertTrue(session.getTotalDuration().toSeconds() < 9,
 				"Es sollten weniger als 9 Sekunden Dauer gemessen werden.");
@@ -95,19 +99,55 @@ public class TimeMeasurementTests {
 
 	@Test
 	@Rollback(false)
-	void calculatesCorrectLegalNetDuration_ofSevenHourShift() throws InterruptedException {
+	/**
+	 *  preventing rollbacks in this class is temporary helpful as long as the testdata is quite shallow
+	 * 
+	 *  this test only showed a failure, because another dataset messed up the result of an incomplete repository search method
+	 */
+	void calculatesCorrectLegalNetDuration_ofARegularShift() {
 		var employee = getTrainingAccount().getEmployee();
 		ZonedDateTime searchStartingPoint = ZonedDateTime.now().minusHours(7).minusMinutes(1);
 		WorkSession session = sessionService.createAndStartWorkSessionFor(employee);
 		ZonedDateTime sessionStart = session.getStartTimeStamp();
 		session.setStartTimeStamp(sessionStart.minusHours(7));
-		sessionService.finishWorkSession(session);
+		sessionService.finishAndSaveWorkSession(session);
 
 		WorkSession searchResult = sessionService.findFirstWorkSessionAfter(searchStartingPoint, employee);
+		log.info("searchStartingPoint:" + searchStartingPoint.toString());
+		log.info("foundSession startingPoint:" + searchResult.getStartTimeStamp().toString());
 		Duration expectedBreakDuration = LegalShiftType.REGULAR_SHIFT.getLegalBreakDuration();
 		Duration actualBreakDuration = searchResult.getBreakDuration();
 		assertEquals(expectedBreakDuration.toMinutes(), actualBreakDuration.toMinutes(),
 				"Die erwartete Pausenlänge (in Minuten) sollte übereinstimmen");
+	}
+	
+
+	@ParameterizedTest
+	@MethodSource("getTestDataShiftDurations")
+	void calculatesCorrectLegalNetDuration_forTotalShiftDuration(Duration shiftDurationWithBreak, Duration expectedBreakDuration) {
+		var employee = getTrainingAccount().getEmployee();
+		ZonedDateTime searchStartingPoint = ZonedDateTime.now().minus(shiftDurationWithBreak).minusMinutes(1);
+		WorkSession session = sessionService.createAndStartWorkSessionFor(employee);
+		ZonedDateTime sessionStart = session.getStartTimeStamp();
+		session.setStartTimeStamp(sessionStart.minus(shiftDurationWithBreak));
+		sessionService.finishAndSaveWorkSession(session);
+
+		WorkSession searchResult = sessionService.findFirstWorkSessionAfter(searchStartingPoint, employee);
+		Duration actualBreakDuration = searchResult.getBreakDuration();
+		assertEquals(expectedBreakDuration.toMinutes(), actualBreakDuration.toMinutes(),
+				"Die erwartete Pausenlänge (in Minuten) sollte übereinstimmen");
+	}
+	
+	static Stream<Arguments> getTestDataShiftDurations() {
+	    return Stream.of(
+	        Arguments.of(Duration.ofHours(4), LegalShiftType.NO_BREAK.getLegalBreakDuration()),
+	        Arguments.of(Duration.ofHours(5), LegalShiftType.NO_BREAK.getLegalBreakDuration()),
+	        Arguments.of(Duration.ofHours(6), LegalShiftType.REGULAR_SHIFT.getLegalBreakDuration()),
+	        Arguments.of(Duration.ofHours(7), LegalShiftType.REGULAR_SHIFT.getLegalBreakDuration()),
+	        Arguments.of(Duration.ofHours(8), LegalShiftType.REGULAR_SHIFT.getLegalBreakDuration()),
+	        Arguments.of(Duration.ofHours(9), LegalShiftType.LONG_SHIFT.getLegalBreakDuration()),
+	        Arguments.of(Duration.ofHours(10), LegalShiftType.LONG_SHIFT.getLegalBreakDuration())
+	    );
 	}
 
 //    @Test
@@ -134,7 +174,7 @@ public class TimeMeasurementTests {
 	private void createTenMeasurementsFor(Employee employee) {
 		for (int daysBack = 9; daysBack >= 0; daysBack--) {
 			var session = sessionService.createAndStartWorkSessionFor(employee);
-			sessionService.finishWorkSession(session);
+			sessionService.finishAndSaveWorkSession(session);
 
 			ZonedDateTime start = session.getStartTimeStamp();
 			start = start.minusDays(daysBack);

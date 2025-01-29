@@ -27,7 +27,7 @@ class WorkSessionServiceImpl implements WorkSessionService {
 	}
 
 	@Override
-	public void finishWorkSession(WorkSession session) {
+	public void finishAndSaveWorkSession(WorkSession session) {
 		session.finishNow();
 		workSessionRepo.saveAndFlush(session);
 	}
@@ -45,7 +45,7 @@ class WorkSessionServiceImpl implements WorkSessionService {
 
 	@Override
 	public WorkSession findFirstWorkSessionAfter(ZonedDateTime searchStartingPoint, Employee employee) {
-		List<WorkSession> sessions = workSessionRepo.findByStartTimeStampAfterAndEmployee(searchStartingPoint, employee);
+		List<WorkSession> sessions = workSessionRepo.findFirstByStartTimeStampAfterAndEmployee(searchStartingPoint, employee);
 		if(sessions.size() == 0)
 			throw new IllegalArgumentException("Es gibt für "+ employee.getUserAccount().getName() +" keine Messungen nach " + searchStartingPoint.toString());
 		return sessions.get(0);

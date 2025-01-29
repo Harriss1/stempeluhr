@@ -27,7 +27,7 @@ public class UserAccount {
     @Getter @Setter 
     @Nullable
     @OneToOne
-	// User is the owning side of the relationship on purpose, so one user is only allowed to timestamp for one Employee
+	// User is the owning side of the relationship on purpose, so one User is only allowed to timestamp for one Employee
 	@JoinColumn(name = "employee_id")
     private Employee employee;
 

@@ -1,21 +1,26 @@
-package de.karlk.timetracker.measurements;
+package de.karlk.timetracker;
 
+import java.io.Serializable;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 
-import de.karlk.timetracker.Employee;
+import de.karlk.timetracker.measurements.LegalShiftType;
 import jakarta.annotation.Nonnull;
+import jakarta.annotation.Nullable;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-//@Entity
-//@Table(name = "work_session")
-public class WorkSession {
+@Entity
+@Table(name = "work_session")
+public class WorkSession  implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Getter
@@ -23,9 +28,9 @@ public class WorkSession {
 	
 	@Nonnull
 	@Getter
-	/**
-	 * API-specification: created worksessions should never be able to edit the assigned employee
-	 */
+	// no setter, because created worksessions should never be able to edit the assigned employee
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "employee_id")
 	private Employee employee;
 	
 	@Getter
@@ -33,6 +38,7 @@ public class WorkSession {
 	private ZonedDateTime startTimeStamp; // not sure if this ZonedDateTime class is supported by jpa and how it works
 	
 	@Getter
+	@Nullable
 	private ZonedDateTime endTimeStamp;
 	
 	@Getter

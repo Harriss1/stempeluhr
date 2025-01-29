@@ -12,18 +12,18 @@ public enum LegalShiftType {
 
 	@Getter
 	private final Duration legalBreakDuration;
-	private final Duration totalShiftDuration;
+	private final Duration lowerShiftDurationLimit;
 	
-	private LegalShiftType(Duration breakDuration, Duration totalShiftDuration) {
+	private LegalShiftType(Duration breakDuration, Duration lowerShiftDurationLimit) {
 		this.legalBreakDuration = breakDuration;
-		this.totalShiftDuration = totalShiftDuration;
+		this.lowerShiftDurationLimit = lowerShiftDurationLimit;
 	}
 	
-	public static LegalShiftType byTotalShiftDuration(Duration workDuration) {
-		if(workDuration.compareTo(LONG_SHIFT.totalShiftDuration) >= 0) {
+	public static LegalShiftType byTotalShiftDuration(Duration totalShiftDuration) {
+		if(totalShiftDuration.compareTo(LONG_SHIFT.lowerShiftDurationLimit) >= 0) {
 			return LONG_SHIFT;
 		}
-		if(workDuration.compareTo(REGULAR_SHIFT.totalShiftDuration) >= 0) {
+		if(totalShiftDuration.compareTo(REGULAR_SHIFT.lowerShiftDurationLimit) >= 0) {
 			return REGULAR_SHIFT;
 		}
 		return NO_BREAK;

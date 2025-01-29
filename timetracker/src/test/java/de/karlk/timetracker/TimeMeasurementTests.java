@@ -9,7 +9,6 @@ import java.time.ZonedDateTime;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -34,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Slf4j
 /**
- * Zeitmessungen werden im TTD-Stil implementiert
+ * Zeitmessungen werden im TDD-Stil implementiert
  */
 public class TimeMeasurementTests {
 

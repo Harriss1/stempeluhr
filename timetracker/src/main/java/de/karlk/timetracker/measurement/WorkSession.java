@@ -22,6 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 @Entity
 @Table(name = "work_session")
 @Slf4j
+@SuppressWarnings("serial")
 public class WorkSession  implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -36,7 +37,7 @@ public class WorkSession  implements Serializable {
 	private Employee employee;
 	
 	@Getter
-	private ZonedDateTime startTimeStamp; // not sure if this ZonedDateTime class is supported by jpa and how it works
+	private ZonedDateTime startTimeStamp;
 	
 	@Getter
 	@Nullable
@@ -45,7 +46,6 @@ public class WorkSession  implements Serializable {
 	@Getter
 	@Setter
 	// should be NULL as long as the endTimeStamp is not set and the breakduration calculated
-	// Long? must be tested if Hibernate supports Duration, online ressources say from version 5 onwards
 	private Duration breakDuration;
 	
 	protected WorkSession() {}

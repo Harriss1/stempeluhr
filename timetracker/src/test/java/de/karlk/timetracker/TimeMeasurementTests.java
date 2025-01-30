@@ -10,7 +10,6 @@ import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -20,7 +19,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import de.karlk.timetracker.measurement.LegalShiftType;
 import de.karlk.timetracker.measurement.WorkSession;
@@ -28,7 +26,6 @@ import de.karlk.timetracker.measurement.WorkSessionService;
 import lombok.extern.slf4j.Slf4j;
 
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
-@ExtendWith(SpringExtension.class)
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @Slf4j
@@ -154,7 +151,7 @@ public class TimeMeasurementTests {
 
     @Test
     @Rollback(false)
-    void sumUpMultipleWorkSessionsOfOneEmployee_between() throws InterruptedException {
+    void sumUpMultipleWorkSessionsOfOneEmployee_intuitiveTestdata() throws InterruptedException {
 		var employee = getTrainingAccount().getEmployee();
     	int daysSinceStart = 9;
 		createAMeasurementForEachDaySince(daysSinceStart, employee);
@@ -196,4 +193,23 @@ public class TimeMeasurementTests {
 			sessionService.saveWorkSession(session);
 		}
 	}
+	
+    @Test
+	@MethodSource("getStructuredTestdataSumOfShifts")
+    void sumUpMultipleWorkSessionsOfOneEmployee_structuredTestdata(ZonedDateTime start, ZonedDateTime end, Duration expectedNetWorkDuration) {
+    	createStructuredTestdata();
+    	assert(false);
+    }
+
+	static Stream<Arguments> getStructuredTestdataSumOfShifts() {
+	    return Stream.of(
+	        Arguments.of(null, null, null)
+	    );
+	}
+
+	private void createStructuredTestdata() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

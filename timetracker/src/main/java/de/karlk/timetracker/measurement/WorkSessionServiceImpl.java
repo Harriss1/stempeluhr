@@ -40,7 +40,7 @@ class WorkSessionServiceImpl implements WorkSessionService {
 
 	@Override
 	public Duration calculateNetWorkDurationBetween(ZonedDateTime start, ZonedDateTime end, Employee employee) {
-		log.info("SUCHE ZWISCHEN DATUMSANGABEN");
+		log.info("----- Suche zwischen Datumsangaben ------");
 		List<WorkSession> sessions = workSessionRepo.findByStartTimeStampAfterAndEndTimeStampBeforeAndEmployee(start, end, employee);
 		Duration duration = Duration.ZERO;
 		if(sessions.size() == 0) {

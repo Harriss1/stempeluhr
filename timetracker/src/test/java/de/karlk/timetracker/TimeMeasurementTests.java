@@ -31,6 +31,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 /**
  * Zeitmessungen werden im TDD-Stil implementiert
+ * 
+ * Aktuell wird die Datenbank nicht nach jedem Test zurückgesetzt. Ob dies tatsächlich ein gutes Vorgehen ist sollte ich recherchieren.
  */
 public class TimeMeasurementTests {
 
@@ -50,15 +52,17 @@ public class TimeMeasurementTests {
 
 	@BeforeEach
 	public void setupTrainingAccount() {
-		if (userRepository.findByName(TRAINING_ACCOUNT_NAME).size() > 0) {
-			log.warn("Trainingsaccount für TimeMeasurementTests sollte noch nicht existieren!");
+		if(userRepository.findByName(TRAINING_ACCOUNT_NAME).size() != 0) {
+			log.warn("Trainingsaccount für TimeMeasurementTests sollte noch nicht existieren. "
+				+ "(Testumgebung wird vermutlich aktuell erst nach allen Tests zurückgesetzt.)");
 			return;
 		}
-		Employee ina = new Employee("Ina", "Zinn");
-		employeeRepository.save(ina);
-		UserAccount training = new UserAccount(TRAINING_ACCOUNT_NAME);
-		training.setEmployee(ina);
-		userRepository.save(training);
+
+		Employee isabell = new Employee("Ina", "Zinn");
+		employeeRepository.save(isabell);
+		UserAccount training_as_isabell = new UserAccount(TRAINING_ACCOUNT_NAME);
+		training_as_isabell.setEmployee(isabell);
+		userRepository.save(training_as_isabell);
 		entityManager.flush();
 		entityManager.clear();
 	}
@@ -70,8 +74,8 @@ public class TimeMeasurementTests {
 	@Test
 	void startAMeasurement_andCheckDuration() throws InterruptedException {
 		var employee = getTrainingAccount().getEmployee();
-
 		var session = sessionService.createAndStartWorkSessionFor(employee);
+
 		assertNotNull(session, "WorkSession sollte instanziiert worden sein");
 		assertNotNull(session.getEmployee(), "WorkSession sollte einem Mitarbeiter zugeordnet sein");
 		Thread.sleep(4000);

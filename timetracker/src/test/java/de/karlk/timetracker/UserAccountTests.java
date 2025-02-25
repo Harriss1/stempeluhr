@@ -16,6 +16,10 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 
+import de.karlk.timetracker.employee.Employee;
+import de.karlk.timetracker.employee.EmployeeRepository;
+import de.karlk.timetracker.employee.UserAccount;
+import de.karlk.timetracker.employee.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @TestPropertySource(

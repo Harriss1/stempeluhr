@@ -20,9 +20,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 
-import de.karlk.timetracker.measurement.LegalShiftType;
-import de.karlk.timetracker.measurement.WorkSession;
-import de.karlk.timetracker.measurement.WorkSessionService;
+import de.karlk.timetracker.employee.Employee;
+import de.karlk.timetracker.employee.EmployeeRepository;
+import de.karlk.timetracker.employee.UserAccount;
+import de.karlk.timetracker.employee.UserRepository;
+import de.karlk.timetracker.worksession.LegalShiftType;
+import de.karlk.timetracker.worksession.WorkSession;
+import de.karlk.timetracker.worksession.WorkSessionService;
 import lombok.extern.slf4j.Slf4j;
 
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")

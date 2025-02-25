@@ -1,9 +1,9 @@
-package de.karlk.timetracker.measurement;
+package de.karlk.timetracker.worksession;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
 
-import de.karlk.timetracker.Employee;
+import de.karlk.timetracker.employee.Employee;
 
 public interface WorkSessionService {
 	

@@ -1,4 +1,4 @@
-package de.karlk.timetracker.measurement;
+package de.karlk.timetracker.worksession;
 
 import java.time.Duration;
 

@@ -1,9 +1,9 @@
-package de.karlk.timetracker;
+package de.karlk.timetracker.employee;
 
 import java.util.List;
 import java.util.Objects;
 
-import de.karlk.timetracker.measurement.WorkSession;
+import de.karlk.timetracker.worksession.WorkSession;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;

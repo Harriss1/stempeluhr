@@ -1,4 +1,4 @@
-package de.karlk.timetracker.measurement;
+package de.karlk.timetracker.worksession;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import de.karlk.timetracker.Employee;
-import de.karlk.timetracker.EmployeeRepository;
+import de.karlk.timetracker.employee.Employee;
+import de.karlk.timetracker.employee.EmployeeRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @Service

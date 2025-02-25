@@ -8,6 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
+import de.karlk.timetracker.employee.Employee;
+import de.karlk.timetracker.employee.EmployeeRepository;
+import de.karlk.timetracker.employee.UserAccount;
+import de.karlk.timetracker.employee.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication

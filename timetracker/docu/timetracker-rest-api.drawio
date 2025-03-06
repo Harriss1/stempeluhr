@@ -1,157 +1,175 @@
-<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.9 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="26.0.9">
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.16 Chrome/132.0.6834.196 Electron/34.2.0 Safari/537.36" version="26.0.16">
   <diagram name="Seite-1" id="1bQaxZ-msq_aHllpaf4p">
     <mxGraphModel dx="1927" dy="902" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-1" value="Timetracker&lt;div&gt;API&lt;/div&gt;&lt;div&gt;Requests&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-1" value="Timetracker&lt;div&gt;API&lt;/div&gt;&lt;div&gt;Requests&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
           <mxGeometry x="280" y="90" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-2" value="Start&lt;div&gt;(Create)&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-2" value="POST&lt;div&gt;Start Record&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
           <mxGeometry x="40" y="240" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-3" value="Stop&lt;div&gt;(Create)&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-3" value="PATCH&lt;div&gt;Stop Record&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
           <mxGeometry x="160" y="240" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-4" value="Read One Entry of Specific User" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-4" value="GET&lt;div&gt;One Record of a User&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
           <mxGeometry x="280" y="240" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-5" value="Update One Entry of Specific User" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="400" y="240" width="80" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-6" value="Delete One Entry of Specific User" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-5" value="PUT&lt;div&gt;Update a Record of a User&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
           <mxGeometry x="520" y="240" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-7" value="&lt;div&gt;&quot;Start&quot;&lt;/div&gt;Username" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-6" value="DELETE&lt;div&gt;One Record of a User&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="400" y="240" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-7" value="&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Username&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="40" y="360" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-9" value="&lt;div&gt;&quot;Stop&quot;&lt;/div&gt;Username" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-9" value="&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Username&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="160" y="360" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-10" value="&lt;div&gt;&quot;Read&quot;&lt;/div&gt;Username&lt;div&gt;&quot;startedAt:&lt;/div&gt;&lt;div&gt;DateTime&quot;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-10" value="&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Username&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&quot;startedAt:&lt;/div&gt;&lt;div&gt;DateTime&quot;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="280" y="360" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-11" value="Idee:&lt;div&gt;startedAtOrAfter: Falls es für einen bestimmten Tag mehrere Einträge geben sollte, kann hiermit das Verhalten vereinheitlicht werden.&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" vertex="1" parent="1">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-11" value="Idee:&lt;div&gt;startedAtOrAfter: Falls es für einen bestimmten Tag mehrere Einträge geben sollte, kann hiermit das Verhalten vereinheitlicht werden.&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="1" vertex="1">
           <mxGeometry x="150" y="470" width="210" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-12" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" edge="1" parent="1" source="TgnmB5LtPzSjb_zzNegX-36" target="TgnmB5LtPzSjb_zzNegX-7">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-12" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" parent="1" source="TgnmB5LtPzSjb_zzNegX-36" target="TgnmB5LtPzSjb_zzNegX-7" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="410" y="450" as="sourcePoint" />
             <mxPoint x="460" y="400" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-14" value="Requests" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="-140" y="250" width="120" height="60" as="geometry" />
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-14" value="Requests" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-120" y="240" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-15" value="Contents" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="-140" y="380" width="120" height="60" as="geometry" />
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-15" value="Content Examples" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-120" y="360" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-16" value="Responses" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="-130" y="710" width="120" height="60" as="geometry" />
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-16" value="Responses" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-120" y="690" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-17" value="Contents" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="-130" y="800" width="120" height="60" as="geometry" />
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-17" value="Contents" style="rounded=1;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="-120" y="770" width="120" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-18" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="TgnmB5LtPzSjb_zzNegX-1" target="TgnmB5LtPzSjb_zzNegX-2">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-18" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" source="TgnmB5LtPzSjb_zzNegX-1" target="TgnmB5LtPzSjb_zzNegX-2" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="240" y="470" as="sourcePoint" />
             <mxPoint x="290" y="420" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-19" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="TgnmB5LtPzSjb_zzNegX-1" target="TgnmB5LtPzSjb_zzNegX-3">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-19" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" source="TgnmB5LtPzSjb_zzNegX-1" target="TgnmB5LtPzSjb_zzNegX-3" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="240" y="470" as="sourcePoint" />
             <mxPoint x="290" y="420" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-20" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="TgnmB5LtPzSjb_zzNegX-1" target="TgnmB5LtPzSjb_zzNegX-4">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-20" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" source="TgnmB5LtPzSjb_zzNegX-1" target="TgnmB5LtPzSjb_zzNegX-4" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="240" y="470" as="sourcePoint" />
             <mxPoint x="290" y="420" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-21" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="TgnmB5LtPzSjb_zzNegX-1" target="TgnmB5LtPzSjb_zzNegX-5">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-21" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" source="TgnmB5LtPzSjb_zzNegX-1" target="TgnmB5LtPzSjb_zzNegX-5" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="240" y="470" as="sourcePoint" />
             <mxPoint x="290" y="420" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-22" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="TgnmB5LtPzSjb_zzNegX-1" target="TgnmB5LtPzSjb_zzNegX-6">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-22" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" source="TgnmB5LtPzSjb_zzNegX-1" target="TgnmB5LtPzSjb_zzNegX-6" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="240" y="470" as="sourcePoint" />
             <mxPoint x="290" y="420" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-23" value="&lt;div&gt;&quot;Update&quot;&lt;/div&gt;Username&lt;div&gt;&quot;startedAt:&lt;/div&gt;&lt;div&gt;DateTime&quot;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="400" y="360" width="80" height="80" as="geometry" />
-        </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-24" value="&lt;div&gt;&quot;Update&quot;&lt;/div&gt;Username&lt;div&gt;&quot;startedAt:&lt;/div&gt;&lt;div&gt;DateTime&quot;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-23" value="&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Username&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&quot;startedAt:&lt;/div&gt;&lt;div&gt;DateTime&quot;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="520" y="360" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-25" value="Nicht abgeschlossene Einträge können nicht aktualisiert oder gelöscht werden, sonst sind komplexe Sicherheitsabfragen nötig." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" vertex="1" parent="1">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-24" value="&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Username&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&quot;startedAt:&lt;/div&gt;&lt;div&gt;DateTime&quot;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="400" y="360" width="80" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-25" value="Nicht abgeschlossene Einträge können nicht aktualisiert oder gelöscht werden, sonst sind komplexe Sicherheitsabfragen nötig." style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="1" vertex="1">
           <mxGeometry x="400" y="470" width="210" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-26" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" edge="1" parent="1" source="TgnmB5LtPzSjb_zzNegX-25" target="TgnmB5LtPzSjb_zzNegX-24">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-26" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" parent="1" source="TgnmB5LtPzSjb_zzNegX-25" target="TgnmB5LtPzSjb_zzNegX-24" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="660" y="450" as="sourcePoint" />
             <mxPoint x="548" y="440" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-27" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" edge="1" parent="1" source="TgnmB5LtPzSjb_zzNegX-25" target="TgnmB5LtPzSjb_zzNegX-23">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-27" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" parent="1" source="TgnmB5LtPzSjb_zzNegX-25" target="TgnmB5LtPzSjb_zzNegX-23" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="542" y="480" as="sourcePoint" />
             <mxPoint x="558" y="450" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-28" value="Success" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="30" y="690" width="80" height="80" as="geometry" />
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-28" value="Success" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="40" y="680" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-29" value="Timetracker&lt;div&gt;API&lt;/div&gt;&lt;div&gt;Responses&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="90" y="590" width="80" height="80" as="geometry" />
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-29" value="Timetracker&lt;div&gt;API&lt;/div&gt;&lt;div&gt;Responses&lt;/div&gt;" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="120" y="600" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-30" value="&quot;statusCode:&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;success&quot;&lt;/span&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;requested:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;start/stop/...&quot;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;message:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;example&quot;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="30" y="790" width="80" height="130" as="geometry" />
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-30" value="&quot;statusCode:&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;success&quot;&lt;/span&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;requested:&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;start/stop/...&quot;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;message:&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;example&quot;&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="10" y="770" width="150" height="60" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-31" value="Failure" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" vertex="1" parent="1">
-          <mxGeometry x="150" y="690" width="80" height="80" as="geometry" />
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-31" value="Failure" style="ellipse;whiteSpace=wrap;html=1;aspect=fixed;" parent="1" vertex="1">
+          <mxGeometry x="200" y="680" width="80" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-33" value="&quot;statusCode:&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;failure&quot;&lt;/span&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;requested:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;start/stop/...&quot;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&quot;failureType:&lt;br&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;inProgress/&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;alreadyStoped&quot;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;message:&lt;/span&gt;&lt;/div&gt;&lt;div&gt;reason&quot;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
-          <mxGeometry x="150" y="790" width="80" height="130" as="geometry" />
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-33" value="&quot;statusCode:&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;failure&quot;&lt;/span&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;requested:&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;start/stop/...&quot;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&quot;failureType:&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;inProgress/&lt;/span&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;alreadyStoped&quot;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;&quot;message:&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;reason&quot;&lt;/span&gt;&lt;/div&gt;" style="rounded=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="190" y="770" width="160" height="80" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-34" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="TgnmB5LtPzSjb_zzNegX-29" target="TgnmB5LtPzSjb_zzNegX-28">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-34" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" source="TgnmB5LtPzSjb_zzNegX-29" target="TgnmB5LtPzSjb_zzNegX-28" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="101" y="171" as="sourcePoint" />
             <mxPoint x="31" y="259" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-35" value="" style="endArrow=classic;html=1;rounded=0;" edge="1" parent="1" source="TgnmB5LtPzSjb_zzNegX-29" target="TgnmB5LtPzSjb_zzNegX-31">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-35" value="" style="endArrow=classic;html=1;rounded=0;" parent="1" source="TgnmB5LtPzSjb_zzNegX-29" target="TgnmB5LtPzSjb_zzNegX-31" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="101" y="171" as="sourcePoint" />
             <mxPoint x="31" y="259" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-36" value="Pausenzeiten:&lt;div&gt;Bei Abständen von mehr als 8 Stunden wird von einer neuen Schicht ausgegangen. (Falls am Ende noch Zeit ist, kann natürlich ein Pausenstart und -stop realisiert werden.)&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" vertex="1" parent="1">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-36" value="Pausenzeiten:&lt;div&gt;Bei Abständen von mehr als 8 Stunden wird von einer neuen Schicht ausgegangen. (Falls am Ende noch Zeit ist, kann natürlich ein Pausenstart und -stop realisiert werden.)&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="1" vertex="1">
           <mxGeometry x="-90" y="470" width="210" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-37" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" edge="1" parent="1" source="TgnmB5LtPzSjb_zzNegX-36" target="TgnmB5LtPzSjb_zzNegX-9">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-37" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" parent="1" source="TgnmB5LtPzSjb_zzNegX-36" target="TgnmB5LtPzSjb_zzNegX-9" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="410" y="450" as="sourcePoint" />
             <mxPoint x="460" y="400" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-39" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" edge="1" parent="1" source="TgnmB5LtPzSjb_zzNegX-11" target="TgnmB5LtPzSjb_zzNegX-10">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-39" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" parent="1" source="TgnmB5LtPzSjb_zzNegX-11" target="TgnmB5LtPzSjb_zzNegX-10" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="488" y="480" as="sourcePoint" />
             <mxPoint x="472" y="450" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-40" value="Fehlernachrichten:&lt;div&gt;-&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Start not possible (already started)&lt;/span&gt;&lt;/div&gt;&lt;div&gt;- Stop not possible (already stopped)&lt;/div&gt;&lt;div&gt;- Update / Delete not possible (still in progress)&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" vertex="1" parent="1">
-          <mxGeometry x="290" y="805" width="210" height="100" as="geometry" />
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-40" value="Fehlertypen:&lt;div&gt;-&amp;nbsp;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;Start not possible (already started)&lt;/span&gt;&lt;/div&gt;&lt;div&gt;- Stop not possible (already stopped)&lt;/div&gt;&lt;div&gt;- Update / Delete not possible (still in progress)&lt;/div&gt;" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="1" vertex="1">
+          <mxGeometry x="370" y="750" width="210" height="100" as="geometry" />
         </mxCell>
-        <mxCell id="TgnmB5LtPzSjb_zzNegX-41" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" edge="1" parent="1" source="TgnmB5LtPzSjb_zzNegX-40" target="TgnmB5LtPzSjb_zzNegX-33">
+        <mxCell id="TgnmB5LtPzSjb_zzNegX-41" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" parent="1" source="TgnmB5LtPzSjb_zzNegX-40" target="TgnmB5LtPzSjb_zzNegX-33" edge="1">
           <mxGeometry width="50" height="50" relative="1" as="geometry">
             <mxPoint x="628" y="780" as="sourcePoint" />
             <mxPoint x="438" y="740" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LdQacFeOFLAJVZjZG0GA-1" value="idempotent!" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="1" vertex="1">
+          <mxGeometry x="442.5" y="140" width="157.5" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="LdQacFeOFLAJVZjZG0GA-2" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" parent="1" source="TgnmB5LtPzSjb_zzNegX-5" target="LdQacFeOFLAJVZjZG0GA-1" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="102" y="480" as="sourcePoint" />
+            <mxPoint x="170" y="436" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="LdQacFeOFLAJVZjZG0GA-3" value="wip" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;" parent="1" vertex="1">
+          <mxGeometry x="242.5" y="620" width="157.5" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="LdQacFeOFLAJVZjZG0GA-4" value="" style="endArrow=none;dashed=1;html=1;dashPattern=1 3;strokeWidth=2;rounded=0;" parent="1" source="TgnmB5LtPzSjb_zzNegX-29" target="LdQacFeOFLAJVZjZG0GA-3" edge="1">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="335.5" y="712" as="sourcePoint" />
+            <mxPoint x="-42.5" y="906" as="targetPoint" />
           </mxGeometry>
         </mxCell>
       </root>

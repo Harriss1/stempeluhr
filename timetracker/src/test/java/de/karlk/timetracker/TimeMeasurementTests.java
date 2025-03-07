@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.Duration;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.stream.Stream;
 
@@ -205,7 +206,10 @@ public class TimeMeasurementTests {
     @Test
 	@MethodSource("getStructuredTestdataSumOfShifts")
     void sumUpMultipleWorkSessionsOfOneEmployee_structuredTestdata(ZonedDateTime start, ZonedDateTime end, Duration expectedNetWorkDuration) {
-    	createStructuredTestdata();
+    	var employee = getTrainingAccount().getEmployee();
+    	// TODO UTC+1 muss für komplette Testumgebung zentral festgelegt werden
+    	ZonedDateTime shiftsStartingDay = ZonedDateTime.of(2015, 3, 12, 0, 0, 0, 0, ZoneId.of("UTC+1")); 
+    	persistShiftsByBoundaryValueAnalysis(3, employee, shiftsStartingDay);
     	assert(false);
     }
 
@@ -215,8 +219,24 @@ public class TimeMeasurementTests {
 	    );
 	}
 
-	private void createStructuredTestdata() {
-		// TODO Auto-generated method stub
+	/**
+	 * Persists the following shifts, whose durations are determined by 2-value-boundary-value-analysis
+	 * 
+	 * <p>shift durations (hh:mm):
+	 * <li>5:59
+	 * <li>6:00
+	 * <li>6:01
+	 * <li>7:59
+	 * <li>8:00
+	 * <li>8:01
+	 * <li>8:59
+	 * <li>9:00
+	 * <li>9:01
+	 * @param timesToRepeat number of repetions of this set, where each set starts after the day of the last set's shift  
+	 * @param employee
+	 * @param start
+	 */
+	private void persistShiftsByBoundaryValueAnalysis(int timesToRepeat, Employee employee, ZonedDateTime start) {
 		
 	}
 

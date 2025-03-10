@@ -52,12 +52,13 @@ public class WorkSession  implements Serializable {
 	
 	/**
 	 * starts the measurment of time
+	 * 
+	 * TODO: method to start measurement of time, and having the worksession unpersistable if the starttime is null
 	 *  
 	 * @param employee
 	 */
 	public WorkSession(Employee employee) {
 		this.employee = employee;
-		this.startTimeStamp = ZonedDateTime.now();
 	}
 	
 	public void setEndTimeStamp(ZonedDateTime time) {
@@ -71,7 +72,10 @@ public class WorkSession  implements Serializable {
 			manageBreakDuration();
 		}
 	}
-	
+
+	public void startNow() {
+		setStartTimeStamp(ZonedDateTime.now());
+	}
 	public void finishNow() {
 		this.endTimeStamp = ZonedDateTime.now();
 		manageBreakDuration();
@@ -99,4 +103,5 @@ public class WorkSession  implements Serializable {
 	public Duration getNetDuration() {
 		return getTotalDuration().minus(breakDuration);
 	}
+
 }

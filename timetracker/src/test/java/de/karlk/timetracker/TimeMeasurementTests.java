@@ -7,6 +7,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.Stream;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -234,10 +236,22 @@ public class TimeMeasurementTests {
 	 * <li>9:01
 	 * @param timesToRepeat number of repetions of this set, where each set starts after the day of the last set's shift  
 	 * @param employee
-	 * @param start
+	 * @param startOfFirstShift
 	 */
-	private void persistShiftsByBoundaryValueAnalysis(int timesToRepeat, Employee employee, ZonedDateTime start) {
-		
+	private void persistShiftsByBoundaryValueAnalysis(int timesToRepeat, Employee employee, ZonedDateTime startOfFirstShift) {
+		WorkSession session = new WorkSession(employee);
+		session.startNow();
 	}
-
+	
+	public List<ExpectedBreakDurationForShiftDuration> getExpectedBreakDurations() {
+		List<ExpectedBreakDurationForShiftDuration> expectedBreakDurations = new ArrayList<ExpectedBreakDurationForShiftDuration>();
+		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("5:59", "0:00"));
+		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("5:59", "0:00"));
+		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("5:59", "0:00"));
+		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("5:59", "0:00"));
+		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("5:59", "0:00"));
+		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("5:59", "0:00"));
+		
+		return expectedBreakDurations;
+	}
 }

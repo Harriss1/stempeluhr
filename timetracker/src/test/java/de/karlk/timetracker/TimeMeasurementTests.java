@@ -212,17 +212,31 @@ public class TimeMeasurementTests {
 
 	@Test
 	@MethodSource("getStructuredTestdataSumOfShifts")
-	void sumUpMultipleWorkSessionsOfOneEmployee_structuredTestdata(ZonedDateTime start, ZonedDateTime end,
+	void sumUpMultipleWorkSessionsOfOneEmployee_structuredTestdata(ZonedDateTime shiftStart, ZonedDateTime shiftEnd,
 			Duration expectedNetWorkDuration) {
+		persistTestDataOnce();
+		assert (false);
+	}
+	
+	private boolean legalBoundaryValueTestDataPersisted = false;
+
+	/**
+	 * TODO Testdaten sollten einmalig global persistiert werden. Generell ist diese Strategie nur ein WIP.
+	 */
+	private void persistTestDataOnce() {
+		if(legalBoundaryValueTestDataPersisted) return;
+		legalBoundaryValueTestDataPersisted = true;
 		var employee = getTrainingAccount().getEmployee();
 		// TODO UTC+1 muss für komplette Testumgebung zentral festgelegt werden
-		ZonedDateTime shiftsStartingDay = ZonedDateTime.of(2015, 3, 12, 0, 0, 0, 0, ZoneId.of("UTC+1"));
-		persistShiftsByBoundaryValueAnalysis(3, employee, shiftsStartingDay);
-		assert (false);
+		ZonedDateTime testDataSetStartingDay = ZonedDateTime.of(2015, 3, 12, 0, 0, 0, 0, ZoneId.of("UTC+1"));
+		persistShiftsByBoundaryValueAnalysis(3, employee, testDataSetStartingDay);
 	}
 
 	static Stream<Arguments> getStructuredTestdataSumOfShifts() {
-		return Stream.of(Arguments.of(null, null, null));
+		ZonedDateTime shiftStart = ZonedDateTime.of(2015, 3, 12, 7, 30, 0, 0, ZoneId.of("UTC+1"));
+		ZonedDateTime shiftEnd = ZonedDateTime.of(2015, 3, 13, 23, 59, 0, 0, ZoneId.of("UTC+1"));
+		Duration expectedNetWorkDuration = Duration.ofHours(11).plusMinutes(59);
+		return Stream.of(Arguments.of(shiftStart, shiftEnd, expectedNetWorkDuration));
 	}
 
 	/**

@@ -23,6 +23,7 @@ class WorkSessionServiceImpl implements WorkSessionService {
 	
 	public WorkSession createAndStartWorkSessionFor(Employee employee) {
 		WorkSession session = new WorkSession(employee);
+		session.startNow();
 		workSessionRepo.saveAndFlush(session);
 		return session;
 	}

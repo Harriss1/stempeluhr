@@ -39,7 +39,8 @@ import lombok.extern.slf4j.Slf4j;
 /**
  * Zeitmessungen werden im TDD-Stil implementiert
  * 
- * Aktuell wird die Datenbank nicht nach jedem Test zurückgesetzt. Ob dies tatsächlich ein gutes Vorgehen ist sollte ich recherchieren.
+ * Aktuell wird die Datenbank nicht nach jedem Test zurückgesetzt. Ob dies
+ * tatsächlich ein gutes Vorgehen ist sollte ich recherchieren.
  */
 public class TimeMeasurementTests {
 
@@ -59,9 +60,9 @@ public class TimeMeasurementTests {
 
 	@BeforeEach
 	public void setupTrainingAccount() {
-		if(userRepository.findByName(TRAINING_ACCOUNT_NAME).size() != 0) {
+		if (userRepository.findByName(TRAINING_ACCOUNT_NAME).size() != 0) {
 			log.warn("Trainingsaccount für TimeMeasurementTests sollte noch nicht existieren. "
-				+ "(Testumgebung wird vermutlich aktuell erst nach allen Tests zurückgesetzt.)");
+					+ "(Testumgebung wird vermutlich aktuell erst nach allen Tests zurückgesetzt.)");
 			return;
 		}
 
@@ -106,9 +107,11 @@ public class TimeMeasurementTests {
 
 	@Test
 	/*
-	 *  preventing rollbacks in this class was temporary helpful as long as the testdata is quite shallow
+	 * preventing rollbacks in this class was temporary helpful as long as the
+	 * testdata is quite shallow
 	 * 
-	 *  this test only showed a failure, because another dataset messed up the result of an incomplete repository search method
+	 * this test only showed a failure, because another dataset messed up the result
+	 * of an incomplete repository search method
 	 */
 	void calculatesCorrectLegalNetDuration_ofARegularShift() {
 		var employee = getTrainingAccount().getEmployee();
@@ -126,11 +129,11 @@ public class TimeMeasurementTests {
 		assertEquals(expectedBreakDuration.toMinutes(), actualBreakDuration.toMinutes(),
 				"Die erwartete Pausenlänge (in Minuten) sollte übereinstimmen");
 	}
-	
 
 	@ParameterizedTest
 	@MethodSource("getTestDataShiftDurations")
-	void calculatesCorrectLegalNetDuration_forTotalShiftDuration(Duration shiftDurationWithBreak, Duration expectedBreakDuration) {
+	void calculatesCorrectLegalNetDuration_forTotalShiftDuration(Duration shiftDurationWithBreak,
+			Duration expectedBreakDuration) {
 		var employee = getTrainingAccount().getEmployee();
 		ZonedDateTime searchStartingPoint = ZonedDateTime.now().minus(shiftDurationWithBreak).minusMinutes(1);
 		WorkSession session = sessionService.createAndStartWorkSessionFor(employee);
@@ -143,45 +146,47 @@ public class TimeMeasurementTests {
 		assertEquals(expectedBreakDuration.toMinutes(), actualBreakDuration.toMinutes(),
 				"Die erwartete Pausenlänge (in Minuten) sollte übereinstimmen");
 	}
-	
+
 	/**
-	 * test data set includes all boundary values plus one hour above and below (zweiwertige Grenzwertprüfung)
+	 * test data set includes all boundary values plus one hour above and below
+	 * (zweiwertige Grenzwertprüfung)
+	 * 
 	 * @return
 	 */
 	static Stream<Arguments> getTestDataShiftDurations() {
-	    return Stream.of(
-	        Arguments.of(Duration.ofHours(4), LegalShiftType.NO_BREAK.getLegalBreakDuration()),
-	        Arguments.of(Duration.ofHours(5), LegalShiftType.NO_BREAK.getLegalBreakDuration()),
-	        Arguments.of(Duration.ofHours(6), LegalShiftType.REGULAR_SHIFT.getLegalBreakDuration()),
-	        Arguments.of(Duration.ofHours(7), LegalShiftType.REGULAR_SHIFT.getLegalBreakDuration()),
-	        Arguments.of(Duration.ofHours(8), LegalShiftType.REGULAR_SHIFT.getLegalBreakDuration()),
-	        Arguments.of(Duration.ofHours(9), LegalShiftType.LONG_SHIFT.getLegalBreakDuration()),
-	        Arguments.of(Duration.ofHours(10), LegalShiftType.LONG_SHIFT.getLegalBreakDuration())
-	    );
+		return Stream.of(Arguments.of(Duration.ofHours(4), LegalShiftType.NO_BREAK.getLegalBreakDuration()),
+				Arguments.of(Duration.ofHours(5), LegalShiftType.NO_BREAK.getLegalBreakDuration()),
+				Arguments.of(Duration.ofHours(6), LegalShiftType.REGULAR_SHIFT.getLegalBreakDuration()),
+				Arguments.of(Duration.ofHours(7), LegalShiftType.REGULAR_SHIFT.getLegalBreakDuration()),
+				Arguments.of(Duration.ofHours(8), LegalShiftType.REGULAR_SHIFT.getLegalBreakDuration()),
+				Arguments.of(Duration.ofHours(9), LegalShiftType.LONG_SHIFT.getLegalBreakDuration()),
+				Arguments.of(Duration.ofHours(10), LegalShiftType.LONG_SHIFT.getLegalBreakDuration()));
 	}
 
-    @Test
-    @Rollback(false)
-    void sumUpMultipleWorkSessionsOfOneEmployee_intuitiveTestdata() throws InterruptedException {
+	@Test
+	@Rollback(false)
+	void sumUpMultipleWorkSessionsOfOneEmployee_intuitiveTestdata() throws InterruptedException {
 		var employee = getTrainingAccount().getEmployee();
-    	int daysSinceStart = 9;
+		int daysSinceStart = 9;
 		createAMeasurementForEachDaySince(daysSinceStart, employee);
-    	
-    	ZonedDateTime start = ZonedDateTime.now().minusDays(daysSinceStart).minusMinutes(1);
-    	ZonedDateTime end = ZonedDateTime.now().minusDays(2);
-    	Duration duration = sessionService.calculateNetWorkDurationBetween(start, end, employee);
-    	log.info(duration.toString());
-    	assertTrue(duration.toHours() > 35, "das Netto Ergebnis sollte ungefähr über 35 Arbeitsstunden liegen");
-    }
+
+		ZonedDateTime start = ZonedDateTime.now().minusDays(daysSinceStart).minusMinutes(1);
+		ZonedDateTime end = ZonedDateTime.now().minusDays(2);
+		Duration duration = sessionService.calculateNetWorkDurationBetween(start, end, employee);
+		log.info(duration.toString());
+		assertTrue(duration.toHours() > 35, "das Netto Ergebnis sollte ungefähr über 35 Arbeitsstunden liegen");
+	}
 
 	/**
-	 * Creates in interval of 1 hour the given amount of worksessions, climbing upwards from amount of days
-	 * ago to current date
+	 * Creates in interval of 1 hour the given amount of worksessions, climbing
+	 * upwards from amount of days ago to current date
 	 * 
 	 * <p>
-	 * starts at a duration of 1 minute and ends at a duration of given days in hours and 1 minute
+	 * starts at a duration of 1 minute and ends at a duration of given days in
+	 * hours and 1 minute
 	 * 
-	 * <p>because of this behavior more than 15 days would not make sense
+	 * <p>
+	 * because of this behavior more than 15 days would not make sense
 	 * 
 	 * @param employee
 	 */
@@ -204,54 +209,58 @@ public class TimeMeasurementTests {
 			sessionService.saveWorkSession(session);
 		}
 	}
-	
-    @Test
+
+	@Test
 	@MethodSource("getStructuredTestdataSumOfShifts")
-    void sumUpMultipleWorkSessionsOfOneEmployee_structuredTestdata(ZonedDateTime start, ZonedDateTime end, Duration expectedNetWorkDuration) {
-    	var employee = getTrainingAccount().getEmployee();
-    	// TODO UTC+1 muss für komplette Testumgebung zentral festgelegt werden
-    	ZonedDateTime shiftsStartingDay = ZonedDateTime.of(2015, 3, 12, 0, 0, 0, 0, ZoneId.of("UTC+1")); 
-    	persistShiftsByBoundaryValueAnalysis(3, employee, shiftsStartingDay);
-    	assert(false);
-    }
+	void sumUpMultipleWorkSessionsOfOneEmployee_structuredTestdata(ZonedDateTime start, ZonedDateTime end,
+			Duration expectedNetWorkDuration) {
+		var employee = getTrainingAccount().getEmployee();
+		// TODO UTC+1 muss für komplette Testumgebung zentral festgelegt werden
+		ZonedDateTime shiftsStartingDay = ZonedDateTime.of(2015, 3, 12, 0, 0, 0, 0, ZoneId.of("UTC+1"));
+		persistShiftsByBoundaryValueAnalysis(3, employee, shiftsStartingDay);
+		assert (false);
+	}
 
 	static Stream<Arguments> getStructuredTestdataSumOfShifts() {
-	    return Stream.of(
-	        Arguments.of(null, null, null)
-	    );
+		return Stream.of(Arguments.of(null, null, null));
 	}
 
 	/**
-	 * Persists the following shifts, whose durations are determined by 2-value-boundary-value-analysis
+	 * Persists shifts, whose durations are determined by
+	 * 2-value-boundary-value-analysis
 	 * 
-	 * <p>shift durations (hh:mm):
-	 * <li>5:59
-	 * <li>6:00
-	 * <li>6:01
-	 * <li>7:59
-	 * <li>8:00
-	 * <li>8:01
-	 * <li>8:59
-	 * <li>9:00
-	 * <li>9:01
-	 * @param timesToRepeat number of repetions of this set, where each set starts after the day of the last set's shift  
+	 * <p> shift durations are to be determined by german work law
+	 * 
+	 * @param timesToRepeat     number of repetions of this set, where each set
+	 *                          starts after the day of the last set's shift
 	 * @param employee
 	 * @param startOfFirstShift
 	 */
-	private void persistShiftsByBoundaryValueAnalysis(int timesToRepeat, Employee employee, ZonedDateTime startOfFirstShift) {
+	private void persistShiftsByBoundaryValueAnalysis(int timesToRepeat, Employee employee,
+			ZonedDateTime startOfFirstShift) {
 		WorkSession session = new WorkSession(employee);
 		session.startNow();
 	}
-	
-	public List<ExpectedBreakDurationForShiftDuration> getExpectedBreakDurations() {
+
+	/**
+	 * Gemäß Arbeitszeitgesetz (ArbZG) § 4 Ruhepausen
+	 * 
+	 * <p>Die Arbeit ist durch im voraus feststehende Ruhepausen von mindestens 30
+	 * Minuten bei einer Arbeitszeit von mehr als sechs bis zu neun Stunden und 45
+	 * Minuten bei einer Arbeitszeit von mehr als neun Stunden insgesamt zu
+	 * unterbrechen.
+	 * 
+	 * @return
+	 */
+	private List<ExpectedBreakDurationForShiftDuration> getLegallyExpectedBreakDurations() {
 		List<ExpectedBreakDurationForShiftDuration> expectedBreakDurations = new ArrayList<ExpectedBreakDurationForShiftDuration>();
 		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("5:59", "0:00"));
-		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("5:59", "0:00"));
-		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("5:59", "0:00"));
-		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("5:59", "0:00"));
-		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("5:59", "0:00"));
-		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("5:59", "0:00"));
-		
+		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("6:00", "0:00"));
+		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("6:01", "0:30"));
+		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("8:59", "0:30"));
+		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("9:00", "0:30"));
+		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("9:01", "0:45"));
+
 		return expectedBreakDurations;
 	}
 }

@@ -210,7 +210,7 @@ public class TimeMeasurementTests {
 		}
 	}
 
-	@Test
+	@ParameterizedTest
 	@MethodSource("getStructuredTestdataSumOfShifts")
 	void sumUpMultipleWorkSessionsOfOneEmployee_structuredTestdata(ZonedDateTime shiftStart, ZonedDateTime shiftEnd,
 			Duration expectedNetWorkDuration) {

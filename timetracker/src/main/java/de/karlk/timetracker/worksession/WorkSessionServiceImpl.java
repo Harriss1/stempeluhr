@@ -28,7 +28,7 @@ class WorkSessionServiceImpl implements WorkSessionService {
 	}
 
 	@Override
-	public void finishAndSaveWorkSession(WorkSession session) {
+	public void finishNowAndSaveWorkSession(WorkSession session) {
 		session.finishNow();
 		workSessionRepo.saveAndFlush(session);
 	}

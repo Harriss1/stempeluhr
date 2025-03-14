@@ -9,7 +9,7 @@ public interface WorkSessionService {
 	
 	WorkSession createAndStartWorkSessionFor(Employee employee);
 
-	void finishAndSaveWorkSession(WorkSession session);
+	void finishNowAndSaveWorkSession(WorkSession session);
 
 	void saveWorkSession(WorkSession session);
 

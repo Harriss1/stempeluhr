@@ -99,7 +99,7 @@ public class TimeMeasurementTests {
 
 		var session = sessionService.createAndStartWorkSessionFor(employee);
 		Thread.sleep(7000);
-		sessionService.finishAndSaveWorkSession(session);
+		sessionService.finishNowAndSaveWorkSession(session);
 		assertTrue(session.getTotalDuration().toSeconds() > 5, "Es sollte mehr als 5 Sekunden Dauer gemessen werden.");
 		assertTrue(session.getTotalDuration().toSeconds() < 9,
 				"Es sollten weniger als 9 Sekunden Dauer gemessen werden.");
@@ -119,7 +119,7 @@ public class TimeMeasurementTests {
 		WorkSession session = sessionService.createAndStartWorkSessionFor(employee);
 		ZonedDateTime sessionStart = session.getStartTimeStamp();
 		session.setStartTimeStamp(sessionStart.minusHours(7));
-		sessionService.finishAndSaveWorkSession(session);
+		sessionService.finishNowAndSaveWorkSession(session);
 
 		WorkSession searchResult = sessionService.findFirstWorkSessionAfter(searchStartingPoint, employee);
 		log.info("searchStartingPoint:" + searchStartingPoint.toString());
@@ -139,7 +139,7 @@ public class TimeMeasurementTests {
 		WorkSession session = sessionService.createAndStartWorkSessionFor(employee);
 		ZonedDateTime sessionStart = session.getStartTimeStamp();
 		session.setStartTimeStamp(sessionStart.minus(shiftDurationWithBreak));
-		sessionService.finishAndSaveWorkSession(session);
+		sessionService.finishNowAndSaveWorkSession(session);
 
 		WorkSession searchResult = sessionService.findFirstWorkSessionAfter(searchStartingPoint, employee);
 		Duration actualBreakDuration = searchResult.getBreakDuration();
@@ -193,7 +193,7 @@ public class TimeMeasurementTests {
 	private void createAMeasurementForEachDaySince(int daysAgo, Employee employee) {
 		for (int daysBack = daysAgo; daysBack >= 0; daysBack--) {
 			var session = sessionService.createAndStartWorkSessionFor(employee);
-			sessionService.finishAndSaveWorkSession(session);
+			sessionService.finishNowAndSaveWorkSession(session);
 
 			ZonedDateTime start = session.getStartTimeStamp();
 			start = start.minusDays(daysBack);
@@ -229,17 +229,28 @@ public class TimeMeasurementTests {
 	 * Persists shifts, whose durations are determined by
 	 * 2-value-boundary-value-analysis
 	 * 
-	 * <p> shift durations are to be determined by german work law
+	 * <p> boundary values are determined by german work law
 	 * 
 	 * @param timesToRepeat     number of repetions of this set, where each set
 	 *                          starts after the day of the last set's shift
 	 * @param employee
-	 * @param startOfFirstShift
+	 * @param startOfFirstShift be careful to also set the hour, as this determines all starting hours 
 	 */
 	private void persistShiftsByBoundaryValueAnalysis(int timesToRepeat, Employee employee,
 			ZonedDateTime startOfFirstShift) {
-		WorkSession session = new WorkSession(employee);
-		session.startNow();
+		int daysAfterStartOfFirstShift = 0;
+		while(timesToRepeat > 0) {
+			timesToRepeat--;
+			for(ExpectedBreakDurationForShiftDuration testDataSet : getLegallyExpectedBreakDurations()) {
+				ZonedDateTime start = startOfFirstShift.plusDays(daysAfterStartOfFirstShift);
+				ZonedDateTime end = startOfFirstShift.plus(testDataSet.totalShiftDuration);
+				WorkSession session = new WorkSession(employee);
+				session.setStartTimeStamp(start);
+				session.setEndTimeStamp(end);
+				daysAfterStartOfFirstShift++;
+				sessionService.saveWorkSession(session);
+			}
+		}
 	}
 
 	/**

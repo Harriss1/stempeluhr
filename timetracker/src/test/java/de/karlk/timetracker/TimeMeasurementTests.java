@@ -215,16 +215,21 @@ public class TimeMeasurementTests {
 	void sumUpMultipleWorkSessionsOfOneEmployee_structuredTestdata(ZonedDateTime shiftStart, ZonedDateTime shiftEnd,
 			Duration expectedNetWorkDuration) {
 		persistTestDataOnce();
-		assert (false);
+		Duration netWorkDuration = sessionService.calculateNetWorkDurationBetween(shiftStart, shiftEnd, getTrainingAccount().getEmployee());
+		assertEquals(0, netWorkDuration.compareTo(expectedNetWorkDuration), 
+				"Die Nettoarbeitszeit sollte abzüglich Pause '"+expectedNetWorkDuration.toString()+"' betragen, "
+						+ "sie beträgt aber '"+netWorkDuration.toString()+"'.");
 	}
-	
+
 	private boolean legalBoundaryValueTestDataPersisted = false;
 
 	/**
-	 * TODO Testdaten sollten einmalig global persistiert werden. Generell ist diese Strategie nur ein WIP.
+	 * TODO Testdaten sollten einmalig global persistiert werden. Generell ist diese
+	 * Strategie nur ein WIP.
 	 */
 	private void persistTestDataOnce() {
-		if(legalBoundaryValueTestDataPersisted) return;
+		if (legalBoundaryValueTestDataPersisted)
+			return;
 		legalBoundaryValueTestDataPersisted = true;
 		var employee = getTrainingAccount().getEmployee();
 		// TODO UTC+1 muss für komplette Testumgebung zentral festgelegt werden
@@ -243,19 +248,21 @@ public class TimeMeasurementTests {
 	 * Persists shifts, whose durations are determined by
 	 * 2-value-boundary-value-analysis
 	 * 
-	 * <p> boundary values are determined by german work law
+	 * <p>
+	 * boundary values are determined by german work law
 	 * 
 	 * @param timesToRepeat     number of repetions of this set, where each set
 	 *                          starts after the day of the last set's shift
 	 * @param employee
-	 * @param startOfFirstShift be careful to also set the hour, as this determines all starting hours 
+	 * @param startOfFirstShift be careful to also set the hour, as this determines
+	 *                          all starting hours
 	 */
 	private void persistShiftsByBoundaryValueAnalysis(int timesToRepeat, Employee employee,
 			ZonedDateTime startOfFirstShift) {
 		int daysAfterStartOfFirstShift = 0;
-		while(timesToRepeat > 0) {
+		while (timesToRepeat > 0) {
 			timesToRepeat--;
-			for(ExpectedBreakDurationForShiftDuration testDataSet : getLegallyExpectedBreakDurations()) {
+			for (ExpectedBreakDurationForShiftDuration testDataSet : getLegallyExpectedBreakDurations()) {
 				ZonedDateTime start = startOfFirstShift.plusDays(daysAfterStartOfFirstShift);
 				ZonedDateTime end = startOfFirstShift.plus(testDataSet.totalShiftDuration);
 				WorkSession session = new WorkSession(employee);
@@ -270,7 +277,8 @@ public class TimeMeasurementTests {
 	/**
 	 * Gemäß Arbeitszeitgesetz (ArbZG) § 4 Ruhepausen
 	 * 
-	 * <p>Die Arbeit ist durch im voraus feststehende Ruhepausen von mindestens 30
+	 * <p>
+	 * Die Arbeit ist durch im voraus feststehende Ruhepausen von mindestens 30
 	 * Minuten bei einer Arbeitszeit von mehr als sechs bis zu neun Stunden und 45
 	 * Minuten bei einer Arbeitszeit von mehr als neun Stunden insgesamt zu
 	 * unterbrechen.

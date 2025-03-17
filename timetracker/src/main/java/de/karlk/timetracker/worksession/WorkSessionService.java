@@ -15,5 +15,10 @@ public interface WorkSessionService {
 
 	Duration calculateNetWorkDurationBetween(ZonedDateTime start, ZonedDateTime end, Employee employee);
 
+	/**
+	 * @param searchStartingPoint reminder: substract one second to find entries that just got created   
+	 * @param employee
+	 * @return
+	 */
 	WorkSession findFirstWorkSessionAfter(ZonedDateTime searchStartingPoint, Employee employee);
 }

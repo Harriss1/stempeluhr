@@ -143,8 +143,10 @@ public class TimeMeasurementTests {
 		session.setEndTimeStamp(end);
 		sessionService.saveWorkSession(session);
 
-		WorkSession sessionToInspect = sessionService.findFirstWorkSessionAfter(start, employee);
-		log.info("searchStartingPoint:" + start.toString());
+		Duration offsetTolerance = Duration.ofSeconds(1);
+		ZonedDateTime startTimeStampForQuery = start.minus(offsetTolerance);
+		WorkSession sessionToInspect = sessionService.findFirstWorkSessionAfter(startTimeStampForQuery, employee);
+		log.info("searchStartingPoint:" + startTimeStampForQuery.toString());
 		log.info("foundSession startingPoint:" + sessionToInspect.getStartTimeStamp().toString());
 
 		assertEquals(expectedNetDuration.toMinutes(), sessionToInspect.getNetDuration().toMinutes(),

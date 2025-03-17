@@ -131,6 +131,7 @@ public class TimeMeasurementTests {
 	}
 	
 	@Test
+	@Rollback(false)
 	void calculatesNetDuration_ofARegularShift() {
 		Duration totalDuration = Duration.ofHours(7);
 		Duration expectedNetDuration = Duration.ofHours(6).plusMinutes(30);
@@ -142,7 +143,7 @@ public class TimeMeasurementTests {
 		
 		WorkSession session = new WorkSession(employee);
 		session.setStartTimeStamp(start);
-		session.setEndTimeStamp(start);
+		session.setEndTimeStamp(end);
 		sessionService.saveWorkSession(session);
 
 		WorkSession sessionToInspect = sessionService.findFirstWorkSessionAfter(start, employee);

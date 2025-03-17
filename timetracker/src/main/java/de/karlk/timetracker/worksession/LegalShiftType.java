@@ -3,6 +3,7 @@ package de.karlk.timetracker.worksession;
 import java.time.Duration;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * According to <u>Arbeitszeitgesetz (ArbZG) § 4 Ruhepausen</u>
@@ -15,6 +16,7 @@ import lombok.Getter;
  * <p>example: 6 hours = no break, 6 hours and 1 second = 30 min
  * break
  */
+@Slf4j
 public enum LegalShiftType {
 
 	NO_BREAK(Duration.ofMinutes(0), Duration.ofHours(6)), 
@@ -33,7 +35,9 @@ public enum LegalShiftType {
 
 	public static LegalShiftType byTotalShiftDuration(Duration totalShiftDuration) {
 		if (totalShiftDuration.toSeconds() > LONG_SHIFT.getMaxShiftDuration().toSeconds()) {
-			throw new UnsupportedOperationException("Es werden nur Arbeitszeiten bis einschließlich 10 Stunden unterstützt.");
+			// TODO klären ob eine UnsupportedOperationException hier günstig wäre, und dann abgefangen werden sollte auf höherer Ebene
+			log.warn("Pausenzeit wird möglicherweise inkorrekt ermittelt. Es werden nur Arbeitszeiten bis einschließlich 10 Stunden unterstützt.");
+			return LONG_SHIFT;
 		}
 		if (totalShiftDuration.toSeconds() > REGULAR_SHIFT.getMaxShiftDuration().toSeconds()) {
 			return LONG_SHIFT;

@@ -82,7 +82,7 @@ public class TimeMeasurementTests {
 	@Test
 	void startAMeasurement_andCheckDuration() throws InterruptedException {
 		var employee = getTrainingAccount().getEmployee();
-		var session = sessionService.createAndStartWorkSessionFor(employee);
+		var session = sessionService.createAndStartWorkSessionNowFor(employee);
 
 		assertNotNull(session, "WorkSession sollte instanziiert worden sein");
 		assertNotNull(session.getEmployee(), "WorkSession sollte einem Mitarbeiter zugeordnet sein");
@@ -97,10 +97,10 @@ public class TimeMeasurementTests {
 	void finishAMeasurment_andCheckDuration() throws InterruptedException {
 		var employee = getTrainingAccount().getEmployee();
 
-		var session = sessionService.createAndStartWorkSessionFor(employee);
+		var session = sessionService.createAndStartWorkSessionNowFor(employee);
 		Thread.sleep(7000);
 		sessionService.finishNowAndSaveWorkSession(session);
-		assertTrue(session.getTotalDuration().toSeconds() > 5, "Es sollte mehr als 5 Sekunden Dauer gemessen werden.");
+		assertTrue(session.getTotalDuration().toSeconds() > 6, "Es sollte mehr als 6 Sekunden Dauer gemessen werden.");
 		assertTrue(session.getTotalDuration().toSeconds() < 9,
 				"Es sollten weniger als 9 Sekunden Dauer gemessen werden.");
 	}
@@ -113,10 +113,10 @@ public class TimeMeasurementTests {
 	 * this test only showed a failure, because another dataset messed up the result
 	 * of an incomplete repository search method
 	 */
-	void calculatesCorrectLegalNetDuration_ofARegularShift() {
+	void calculatesLegallyRequiredBreakDuration_ofARegularShift() {
 		var employee = getTrainingAccount().getEmployee();
 		ZonedDateTime searchStartingPoint = ZonedDateTime.now().minusHours(7).minusMinutes(1);
-		WorkSession session = sessionService.createAndStartWorkSessionFor(employee);
+		WorkSession session = sessionService.createAndStartWorkSessionNowFor(employee);
 		ZonedDateTime sessionStart = session.getStartTimeStamp();
 		session.setStartTimeStamp(sessionStart.minusHours(7));
 		sessionService.finishNowAndSaveWorkSession(session);
@@ -129,6 +129,29 @@ public class TimeMeasurementTests {
 		assertEquals(expectedBreakDuration.toMinutes(), actualBreakDuration.toMinutes(),
 				"Die erwartete Pausenlänge (in Minuten) sollte übereinstimmen");
 	}
+	
+	@Test
+	void calculatesNetDuration_ofARegularShift() {
+		Duration totalDuration = Duration.ofHours(7);
+		Duration expectedNetDuration = Duration.ofHours(6).plusMinutes(30);
+		
+		ZonedDateTime end = ZonedDateTime.now();
+		ZonedDateTime start = end.minus(totalDuration);
+		
+		var employee = getTrainingAccount().getEmployee();
+		
+		WorkSession session = new WorkSession(employee);
+		session.setStartTimeStamp(start);
+		session.setEndTimeStamp(start);
+		sessionService.saveWorkSession(session);
+
+		WorkSession sessionToInspect = sessionService.findFirstWorkSessionAfter(start, employee);
+		log.info("searchStartingPoint:" + start.toString());
+		log.info("foundSession startingPoint:" + sessionToInspect.getStartTimeStamp().toString());
+
+		assertEquals(expectedNetDuration.toMinutes(), sessionToInspect.getNetDuration().toMinutes(),
+				"Die erwartete Nettoarbeitszeit (in Minuten) sollte übereinstimmen");
+	}
 
 	@ParameterizedTest
 	@MethodSource("getTestDataShiftDurations")
@@ -136,7 +159,7 @@ public class TimeMeasurementTests {
 			Duration expectedBreakDuration) {
 		var employee = getTrainingAccount().getEmployee();
 		ZonedDateTime searchStartingPoint = ZonedDateTime.now().minus(shiftDurationWithBreak).minusMinutes(1);
-		WorkSession session = sessionService.createAndStartWorkSessionFor(employee);
+		WorkSession session = sessionService.createAndStartWorkSessionNowFor(employee);
 		ZonedDateTime sessionStart = session.getStartTimeStamp();
 		session.setStartTimeStamp(sessionStart.minus(shiftDurationWithBreak));
 		sessionService.finishNowAndSaveWorkSession(session);
@@ -192,7 +215,7 @@ public class TimeMeasurementTests {
 	 */
 	private void createAMeasurementForEachDaySince(int daysAgo, Employee employee) {
 		for (int daysBack = daysAgo; daysBack >= 0; daysBack--) {
-			var session = sessionService.createAndStartWorkSessionFor(employee);
+			var session = sessionService.createAndStartWorkSessionNowFor(employee);
 			sessionService.finishNowAndSaveWorkSession(session);
 
 			ZonedDateTime start = session.getStartTimeStamp();

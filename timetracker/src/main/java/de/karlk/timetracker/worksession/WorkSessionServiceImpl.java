@@ -21,7 +21,7 @@ class WorkSessionServiceImpl implements WorkSessionService {
 	@Autowired
 	WorkSessionRepository workSessionRepo;
 	
-	public WorkSession createAndStartWorkSessionFor(Employee employee) {
+	public WorkSession createAndStartWorkSessionNowFor(Employee employee) {
 		WorkSession session = new WorkSession(employee);
 		session.startNow();
 		workSessionRepo.saveAndFlush(session);

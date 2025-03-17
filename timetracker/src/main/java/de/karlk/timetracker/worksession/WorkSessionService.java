@@ -7,7 +7,7 @@ import de.karlk.timetracker.employee.Employee;
 
 public interface WorkSessionService {
 	
-	WorkSession createAndStartWorkSessionFor(Employee employee);
+	WorkSession createAndStartWorkSessionNowFor(Employee employee);
 
 	void finishNowAndSaveWorkSession(WorkSession session);
 

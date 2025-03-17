@@ -50,20 +50,8 @@ public class WorkSession  implements Serializable {
 	
 	protected WorkSession() {}
 	
-	/**
-	 * starts the measurment of time
-	 * 
-	 * TODO: method to start measurement of time, and having the worksession unpersistable if the starttime is null
-	 *  
-	 * @param employee
-	 */
 	public WorkSession(Employee employee) {
 		this.employee = employee;
-	}
-	
-	public void setEndTimeStamp(ZonedDateTime time) {
-		this.endTimeStamp=time;
-		manageBreakDuration();
 	}
 	
 	public void setStartTimeStamp(ZonedDateTime time) {
@@ -76,6 +64,24 @@ public class WorkSession  implements Serializable {
 	public void startNow() {
 		setStartTimeStamp(ZonedDateTime.now());
 	}
+	
+	public void setEndTimeStamp(ZonedDateTime time) {
+		if(startTimeStamp == null) 
+			throw new IllegalStateException("Der Startzeitpunkt ist null, sollte aber bereits gesetzt sein. Bitte den Start-Wert zuerst zuweisen.");
+		this.endTimeStamp=time;
+		manageBreakDuration();
+	}
+	
+	/**
+     * Usage reason: an exception gets thrown, if the duration between start and end exceeds 10 hours.
+	 * 
+	 * <p>Use, if there is the unusual case, that the timestamps have to be readjusted and they would otherwise throw this exception. 
+	 */
+	public void setTimeStampsToNull() {
+		this.startTimeStamp = null;
+		this.endTimeStamp = null;
+	}
+	
 	public void finishNow() {
 		this.endTimeStamp = ZonedDateTime.now();
 		manageBreakDuration();

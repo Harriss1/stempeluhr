@@ -130,12 +130,9 @@ public class TimeMeasurementTests {
 				"Die erwartete Pausenlänge (in Minuten) sollte übereinstimmen");
 	}
 	
-	@Test
-	@Rollback(false)
-	void calculatesNetDuration_ofARegularShift() {
-		Duration totalDuration = Duration.ofHours(7);
-		Duration expectedNetDuration = Duration.ofHours(6).plusMinutes(30);
-		
+	@ParameterizedTest
+	@MethodSource("getTestData_calculatesNetDuration")
+	void calculatesNetDuration(Duration totalDuration, Duration expectedNetDuration) {
 		ZonedDateTime end = ZonedDateTime.now();
 		ZonedDateTime start = end.minus(totalDuration);
 		
@@ -152,6 +149,14 @@ public class TimeMeasurementTests {
 
 		assertEquals(expectedNetDuration.toMinutes(), sessionToInspect.getNetDuration().toMinutes(),
 				"Die erwartete Nettoarbeitszeit (in Minuten) sollte übereinstimmen");
+	}
+	
+	static Stream<Arguments> getTestData_calculatesNetDuration() {
+		return Stream.of(Arguments.of(Duration.ofHours(6), Duration.ofHours(6)),
+				Arguments.of(Duration.ofHours(6).plusSeconds(1), Duration.ofHours(5).plusMinutes(30).plusSeconds(1)),
+				Arguments.of(Duration.ofHours(7), Duration.ofHours(6).plusMinutes(30)),
+				Arguments.of(Duration.ofHours(9), Duration.ofHours(8).plusMinutes(30)),
+				Arguments.of(Duration.ofHours(9).plusSeconds(1), Duration.ofHours(8).plusMinutes(15).plusSeconds(1)));
 	}
 
 	@ParameterizedTest

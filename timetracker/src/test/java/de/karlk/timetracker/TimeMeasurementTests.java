@@ -31,17 +31,25 @@ import de.karlk.timetracker.worksession.LegalShiftType;
 import de.karlk.timetracker.worksession.WorkSession;
 import de.karlk.timetracker.worksession.WorkSessionService;
 import lombok.extern.slf4j.Slf4j;
-
-@TestPropertySource(locations = "classpath:application-integrationtest.properties")
-@DataJpaTest
-@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-@Slf4j
 /**
  * Zeitmessungen werden im TDD-Stil implementiert
  * 
  * Aktuell wird die Datenbank nicht nach jedem Test zurückgesetzt. Ob dies
  * tatsächlich ein gutes Vorgehen ist sollte ich recherchieren.
+ * 
+ * <p><u>
+ * Gemäß Arbeitszeitgesetz (ArbZG) § 4 Ruhepausen</u>
+ * 
+ * <p>
+ * Die Arbeit ist durch im voraus feststehende Ruhepausen von mindestens 30
+ * Minuten bei einer Arbeitszeit von mehr als sechs bis zu neun Stunden und 45
+ * Minuten bei einer Arbeitszeit von mehr als neun Stunden insgesamt zu
+ * unterbrechen.
  */
+@TestPropertySource(locations = "classpath:application-integrationtest.properties")
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
+@Slf4j
 public class TimeMeasurementTests {
 
 	@Autowired
@@ -187,10 +195,10 @@ public class TimeMeasurementTests {
 	static Stream<Arguments> getTestDataShiftDurations() {
 		return Stream.of(Arguments.of(Duration.ofHours(4), LegalShiftType.NO_BREAK.getLegalBreakDuration()),
 				Arguments.of(Duration.ofHours(5), LegalShiftType.NO_BREAK.getLegalBreakDuration()),
-				Arguments.of(Duration.ofHours(6), LegalShiftType.REGULAR_SHIFT.getLegalBreakDuration()),
+				Arguments.of(Duration.ofHours(6), LegalShiftType.NO_BREAK.getLegalBreakDuration()),
 				Arguments.of(Duration.ofHours(7), LegalShiftType.REGULAR_SHIFT.getLegalBreakDuration()),
 				Arguments.of(Duration.ofHours(8), LegalShiftType.REGULAR_SHIFT.getLegalBreakDuration()),
-				Arguments.of(Duration.ofHours(9), LegalShiftType.LONG_SHIFT.getLegalBreakDuration()),
+				Arguments.of(Duration.ofHours(9), LegalShiftType.REGULAR_SHIFT.getLegalBreakDuration()),
 				Arguments.of(Duration.ofHours(10), LegalShiftType.LONG_SHIFT.getLegalBreakDuration()));
 	}
 
@@ -305,17 +313,6 @@ public class TimeMeasurementTests {
 		}
 	}
 
-	/**
-	 * Gemäß Arbeitszeitgesetz (ArbZG) § 4 Ruhepausen
-	 * 
-	 * <p>
-	 * Die Arbeit ist durch im voraus feststehende Ruhepausen von mindestens 30
-	 * Minuten bei einer Arbeitszeit von mehr als sechs bis zu neun Stunden und 45
-	 * Minuten bei einer Arbeitszeit von mehr als neun Stunden insgesamt zu
-	 * unterbrechen.
-	 * 
-	 * @return
-	 */
 	private List<ExpectedBreakDurationForShiftDuration> getLegallyExpectedBreakDurations() {
 		List<ExpectedBreakDurationForShiftDuration> expectedBreakDurations = new ArrayList<ExpectedBreakDurationForShiftDuration>();
 		expectedBreakDurations.add(ExpectedBreakDurationForShiftDuration.byString("5:59", "0:00"));

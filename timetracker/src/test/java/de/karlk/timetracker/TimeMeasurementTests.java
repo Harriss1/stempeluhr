@@ -20,7 +20,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.TestPropertySource;
 
 import de.karlk.timetracker.employee.Employee;
@@ -121,6 +120,7 @@ public class TimeMeasurementTests {
 	 * this test only showed a failure, because another dataset messed up the result
 	 * of an incomplete repository search method
 	 */
+//	@Rollback(false)
 	void calculatesLegallyRequiredBreakDuration_ofARegularShift() {
 		var employee = getTrainingAccount().getEmployee();
 		ZonedDateTime searchStartingPoint = ZonedDateTime.now().minusHours(7).minusMinutes(1);
@@ -203,7 +203,6 @@ public class TimeMeasurementTests {
 	}
 
 	@Test
-	@Rollback(false)
 	void sumUpMultipleWorkSessionsOfOneEmployee_intuitiveTestdata() throws InterruptedException {
 		var employee = getTrainingAccount().getEmployee();
 		int daysSinceStart = 9;
@@ -251,7 +250,6 @@ public class TimeMeasurementTests {
 
 	@ParameterizedTest
 	@MethodSource("getStructuredTestdataSumOfShifts")
-	@Rollback(false)
 	void sumUpMultipleWorkSessionsOfOneEmployee_structuredTestdata(ZonedDateTime startOfShifts, ZonedDateTime endOfShifts,
 			Duration expectedNetWorkDuration) {
 		persistTestDataOnce();

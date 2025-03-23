@@ -251,13 +251,16 @@ public class TimeMeasurementTests {
 
 	@ParameterizedTest
 	@MethodSource("getStructuredTestdataSumOfShifts")
-	void sumUpMultipleWorkSessionsOfOneEmployee_structuredTestdata(ZonedDateTime shiftStart, ZonedDateTime shiftEnd,
+	@Rollback(false)
+	void sumUpMultipleWorkSessionsOfOneEmployee_structuredTestdata(ZonedDateTime startOfShifts, ZonedDateTime endOfShifts,
 			Duration expectedNetWorkDuration) {
 		persistTestDataOnce();
-		Duration actualNetWorkDuration = sessionService.calculateNetWorkDurationBetween(shiftStart, shiftEnd, getTrainingAccount().getEmployee());
+		Duration actualNetWorkDuration = sessionService.calculateNetWorkDurationBetween(startOfShifts, endOfShifts, getTrainingAccount().getEmployee());
 		assertEquals(expectedNetWorkDuration.toSeconds(), actualNetWorkDuration.toSeconds(), 
 				"Die Nettoarbeitszeit sollte abzüglich Pause '"+expectedNetWorkDuration.toSeconds()+"s' betragen, "
-						+ "sie beträgt aber '"+actualNetWorkDuration.toSeconds()+"s'.");
+						+ "\nsie beträgt aber '"+actualNetWorkDuration.toSeconds()+"s'."
+						+ "\nStart:" + startOfShifts
+						+ "\nEnd:" + endOfShifts);
 	}
 
 	private boolean legalBoundaryValueTestDataPersisted = false;
@@ -272,15 +275,15 @@ public class TimeMeasurementTests {
 		legalBoundaryValueTestDataPersisted = true;
 		var employee = getTrainingAccount().getEmployee();
 		// TODO UTC+1 muss für komplette Testumgebung zentral festgelegt werden
-		ZonedDateTime testDataSetStartingDay = ZonedDateTime.of(2015, 3, 12, 0, 0, 0, 0, ZoneId.of("UTC+1"));
+		ZonedDateTime testDataSetStartingDay = ZonedDateTime.of(2015, 3, 12, 8, 0, 0, 0, ZoneId.of("UTC+1"));
 		persistShiftsByBoundaryValueAnalysis(3, employee, testDataSetStartingDay);
 	}
 
 	static Stream<Arguments> getStructuredTestdataSumOfShifts() {
-		ZonedDateTime shiftStart = ZonedDateTime.of(2015, 3, 12, 7, 30, 0, 0, ZoneId.of("UTC+1"));
-		ZonedDateTime shiftEnd = ZonedDateTime.of(2015, 3, 13, 23, 59, 0, 0, ZoneId.of("UTC+1"));
+		ZonedDateTime startOfShifts = ZonedDateTime.of(2015, 3, 12, 7, 30, 0, 0, ZoneId.of("UTC+1"));
+		ZonedDateTime endOfShifts = ZonedDateTime.of(2015, 3, 13, 23, 59, 0, 0, ZoneId.of("UTC+1"));
 		Duration expectedNetWorkDuration = Duration.ofHours(11).plusMinutes(59);
-		return Stream.of(Arguments.of(shiftStart, shiftEnd, expectedNetWorkDuration));
+		return Stream.of(Arguments.of(startOfShifts, endOfShifts, expectedNetWorkDuration));
 	}
 
 	/**
@@ -303,7 +306,7 @@ public class TimeMeasurementTests {
 			timesToRepeat--;
 			for (ExpectedBreakDurationForShiftDuration testDataSet : getLegallyExpectedBreakDurations()) {
 				ZonedDateTime start = startOfFirstShift.plusDays(daysAfterStartOfFirstShift);
-				ZonedDateTime end = startOfFirstShift.plus(testDataSet.totalShiftDuration);
+				ZonedDateTime end = start.plus(testDataSet.totalShiftDuration);
 				WorkSession session = new WorkSession(employee);
 				session.setStartTimeStamp(start);
 				session.setEndTimeStamp(end);

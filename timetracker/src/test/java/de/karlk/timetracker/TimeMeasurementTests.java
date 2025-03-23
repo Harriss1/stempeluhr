@@ -254,10 +254,10 @@ public class TimeMeasurementTests {
 	void sumUpMultipleWorkSessionsOfOneEmployee_structuredTestdata(ZonedDateTime shiftStart, ZonedDateTime shiftEnd,
 			Duration expectedNetWorkDuration) {
 		persistTestDataOnce();
-		Duration netWorkDuration = sessionService.calculateNetWorkDurationBetween(shiftStart, shiftEnd, getTrainingAccount().getEmployee());
-		assertEquals(0, netWorkDuration.compareTo(expectedNetWorkDuration), 
-				"Die Nettoarbeitszeit sollte abzüglich Pause '"+expectedNetWorkDuration.toString()+"' betragen, "
-						+ "sie beträgt aber '"+netWorkDuration.toString()+"'.");
+		Duration actualNetWorkDuration = sessionService.calculateNetWorkDurationBetween(shiftStart, shiftEnd, getTrainingAccount().getEmployee());
+		assertEquals(expectedNetWorkDuration.toSeconds(), actualNetWorkDuration.toSeconds(), 
+				"Die Nettoarbeitszeit sollte abzüglich Pause '"+expectedNetWorkDuration.toSeconds()+"s' betragen, "
+						+ "sie beträgt aber '"+actualNetWorkDuration.toSeconds()+"s'.");
 	}
 
 	private boolean legalBoundaryValueTestDataPersisted = false;

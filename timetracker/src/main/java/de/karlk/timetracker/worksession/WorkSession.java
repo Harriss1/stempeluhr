@@ -20,16 +20,23 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * We use a full DDD-Pattern, and not an anemic Domain Model, as for the reasons
+ * We use a rich DDD-Pattern, and not an anemic Domain Model, as for the reasons
  * in this article:
  * 
  * @see <a href="https://martinfowler.com/bliki/AnemicDomainModel.html">Martin
  *      Fowler on Anemic Domain Models</a>
- *      
- * <p>or consider: Eric Evan, Domain Driven Design, "Application
- *      Layer (=Service Layer) should be thin. Domain Layer (or Model Layer):
+ * 
+ *      <p>
+ *      Or consider: Eric Evan, Domain Driven Design, "Application Layer
+ *      (=Service Layer) should be thin. Domain Layer (or Model Layer):
  *      Responsible for representing concepts of the business, information about
  *      the business situation, and business rules."
+ *      <p>
+ *      If this still does not convince you, then consider <a href=
+ *      "https://www.baeldung.com/java-anemic-vs-rich-domain-objects">this
+ *      article from Baeldung on anemic versus rich domain objects</a>. Baeldung
+ *      is the reference source for Spring Boot and they should know what they
+ *      are talking about.
  */
 @Entity
 @Table(name = "work_session")

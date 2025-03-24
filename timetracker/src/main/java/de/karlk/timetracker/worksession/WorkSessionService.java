@@ -13,12 +13,19 @@ public interface WorkSessionService {
 
 	void saveWorkSession(WorkSession session);
 
-	Duration sumUpNetWorkDurationBetween(ZonedDateTime start, ZonedDateTime end, Employee employee);
+	/**
+	 * Adds up the net amount of work durations of all worksessions in the given timespan.
+	 * @param start
+	 * @param end
+	 * @param employee
+	 */
+	Duration calculateSumOfNetWorkDurations(ZonedDateTime start, ZonedDateTime end, Employee employee);
 
 	/**
 	 * @param searchStartingPoint reminder: substract one second to find entries that just got created   
 	 * @param employee
-	 * @return
+	 * @return first found worksession 
+	 * @throws IllegalArgumentException if there are no worksessions found
 	 */
-	WorkSession findFirstWorkSessionAfter(ZonedDateTime searchStartingPoint, Employee employee);
+	WorkSession findFirstWorkSessionAfter(ZonedDateTime searchStartingPoint, Employee employee) throws IllegalArgumentException;
 }

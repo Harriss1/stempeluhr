@@ -40,7 +40,7 @@ class WorkSessionServiceImpl implements WorkSessionService {
 	}
 
 	@Override
-	public Duration sumUpNetWorkDurationBetween(ZonedDateTime start, ZonedDateTime end, Employee employee) {
+	public Duration calculateSumOfNetWorkDurations(ZonedDateTime start, ZonedDateTime end, Employee employee) {
 		log.info("----- Suche zwischen Datumsangaben ------");
 		log.info("start:{} end:{}", start, end);
 		List<WorkSession> sessions = workSessionRepo.findByStartTimeStampAfterAndEndTimeStampBeforeAndEmployee(start, end, employee);
@@ -58,7 +58,7 @@ class WorkSessionServiceImpl implements WorkSessionService {
 	}
 
 	@Override
-	public WorkSession findFirstWorkSessionAfter(ZonedDateTime searchStartingPoint, Employee employee) {
+	public WorkSession findFirstWorkSessionAfter(ZonedDateTime searchStartingPoint, Employee employee) throws IllegalArgumentException {
 		List<WorkSession> sessions = workSessionRepo.findByStartTimeStampAfterAndEmployeeOrderByStartTimeStampAsc(searchStartingPoint, employee);
 		if(sessions.size() == 0)
 			throw new IllegalArgumentException("Es gibt für "+ employee.getUserAccount().getName() +" keine Messungen nach " + searchStartingPoint.toString());

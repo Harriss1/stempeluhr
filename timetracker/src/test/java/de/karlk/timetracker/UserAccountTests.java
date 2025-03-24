@@ -44,7 +44,7 @@ public class UserAccountTests {
     private EmployeeRepository employeeRepository;
 
 	@ParameterizedTest
-	@ValueSource(strings = {"Max", "Sarah"})
+	@ValueSource(strings = {"Gustav", "Marie"})
     void canCreateAndReadUser(String name) {
 		UserAccount expectedUser = new UserAccount(name);
 

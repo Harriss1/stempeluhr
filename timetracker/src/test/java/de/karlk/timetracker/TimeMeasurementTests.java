@@ -210,7 +210,7 @@ public class TimeMeasurementTests {
 
 		ZonedDateTime start = ZonedDateTime.now().minusDays(daysSinceStart).minusMinutes(1);
 		ZonedDateTime end = ZonedDateTime.now().minusDays(2);
-		Duration duration = sessionService.calculateNetWorkDurationBetween(start, end, employee);
+		Duration duration = sessionService.sumUpNetWorkDurationBetween(start, end, employee);
 		log.info(duration.toString());
 		assertTrue(duration.toHours() > 35, "das Netto Ergebnis sollte ungefähr über 35 Arbeitsstunden liegen");
 	}
@@ -253,7 +253,7 @@ public class TimeMeasurementTests {
 	void sumUpMultipleWorkSessionsOfOneEmployee_structuredTestdata(ZonedDateTime startOfShifts, ZonedDateTime endOfShifts,
 			Duration expectedNetWorkDuration) {
 		persistTestDataOnce();
-		Duration actualNetWorkDuration = sessionService.calculateNetWorkDurationBetween(startOfShifts, endOfShifts, getTrainingAccount().getEmployee());
+		Duration actualNetWorkDuration = sessionService.sumUpNetWorkDurationBetween(startOfShifts, endOfShifts, getTrainingAccount().getEmployee());
 		assertEquals(expectedNetWorkDuration.toSeconds(), actualNetWorkDuration.toSeconds(), 
 				"Die Nettoarbeitszeit sollte abzüglich Pause '"+expectedNetWorkDuration.toSeconds()+"s' betragen, "
 						+ "\nsie beträgt aber '"+actualNetWorkDuration.toSeconds()+"s'."

@@ -19,44 +19,59 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * We use a full DDD-Pattern, and not an anemic Domain Model, as for the reasons
+ * in this article:
+ * 
+ * @see <a href="https://martinfowler.com/bliki/AnemicDomainModel.html">Martin
+ *      Fowler on Anemic Domain Models</a>
+ *      
+ * <p>or consider: Eric Evan, Domain Driven Design, "Application
+ *      Layer (=Service Layer) should be thin. Domain Layer (or Model Layer):
+ *      Responsible for representing concepts of the business, information about
+ *      the business situation, and business rules."
+ */
 @Entity
 @Table(name = "work_session")
 @Slf4j
 @SuppressWarnings("serial")
-public class WorkSession  implements Serializable {
+public class WorkSession implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Getter
 	private Long id;
-	
+
 	@Nonnull
 	@Getter
-	// no setter, because created worksessions should never be able to edit the assigned employee
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "employee_id")
+	// no setter, because created worksessions should never be able to edit the
+	// assigned employee
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "employee_id")
 	private Employee employee;
-	
+
 	@Getter
 	private ZonedDateTime startTimeStamp;
-	
+
 	@Getter
 	@Nullable
 	private ZonedDateTime endTimeStamp;
-	
+
 	@Getter
 	@Setter
-	// should be NULL as long as the endTimeStamp is not set and the breakduration calculated
+	// should be NULL as long as the endTimeStamp is not set and the breakduration
+	// calculated
 	private Duration breakDuration;
-	
-	protected WorkSession() {}
-	
+
+	protected WorkSession() {
+	}
+
 	public WorkSession(Employee employee) {
 		this.employee = employee;
 	}
-	
+
 	public void setStartTimeStamp(ZonedDateTime time) {
 		this.startTimeStamp = time;
-		if(endTimeStamp != null) {
+		if (endTimeStamp != null) {
 			manageBreakDuration();
 		}
 	}
@@ -64,41 +79,45 @@ public class WorkSession  implements Serializable {
 	public void startNow() {
 		setStartTimeStamp(ZonedDateTime.now());
 	}
-	
+
 	public void setEndTimeStamp(ZonedDateTime time) {
-		if(startTimeStamp == null) 
-			throw new IllegalStateException("Der Startzeitpunkt ist null, sollte aber bereits gesetzt sein. Bitte den Start-Wert zuerst zuweisen.");
-		this.endTimeStamp=time;
+		if (startTimeStamp == null)
+			throw new IllegalStateException(
+					"Der Startzeitpunkt ist null, sollte aber bereits gesetzt sein. Bitte den Start-Wert zuerst zuweisen.");
+		this.endTimeStamp = time;
 		manageBreakDuration();
 	}
-	
+
 	/**
-     * Usage reason: an exception gets thrown, if the duration between start and end exceeds 10 hours.
+	 * Usage reason: an exception gets thrown, if the duration between start and end
+	 * exceeds 10 hours.
 	 * 
-	 * <p>Use, if there is the unusual case, that the timestamps have to be readjusted and they would otherwise throw this exception. 
+	 * <p>
+	 * Use, if there is the unusual case, that the timestamps have to be readjusted
+	 * and they would otherwise throw this exception.
 	 */
 	public void setTimeStampsToNull() {
 		this.startTimeStamp = null;
 		this.endTimeStamp = null;
 	}
-	
+
 	public void finishNow() {
 		this.endTimeStamp = ZonedDateTime.now();
 		manageBreakDuration();
 	}
-	
+
 	private void manageBreakDuration() {
 		LegalShiftType legalShiftType = LegalShiftType.byTotalShiftDuration(getTotalDuration());
 		this.breakDuration = legalShiftType.getLegalBreakDuration();
 	}
-	
+
 	public Duration getElapsedDuration() {
 		long start = startTimeStamp.toEpochSecond();
 		return Duration.ofSeconds(ZonedDateTime.now().toEpochSecond() - start);
 	}
-	
+
 	public Duration getTotalDuration() {
-		if(endTimeStamp == null) {
+		if (endTimeStamp == null) {
 			throw new IllegalStateException("Die Gesamtzeit kann erst nach Beendigung der Schicht ermittelt werden.");
 		}
 		long end = endTimeStamp.toEpochSecond();

@@ -3,6 +3,9 @@ package de.karlk.timetracker.employee;
 import java.util.List;
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import de.karlk.timetracker.worksession.WorkSession;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -33,10 +36,12 @@ public class Employee {
 	
 	@Getter
 	@OneToOne(mappedBy = "employee")
+	@JsonManagedReference
 	private UserAccount userAccount;
 	
 	@Getter
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "employee")
+	@JsonBackReference
 	private List<WorkSession> workSessions;
 
 //	@Getter

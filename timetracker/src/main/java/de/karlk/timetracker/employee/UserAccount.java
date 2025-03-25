@@ -2,6 +2,8 @@ package de.karlk.timetracker.employee;
 
 import java.util.Objects;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import jakarta.annotation.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -31,6 +33,7 @@ public class UserAccount {
     @OneToOne
 	// User is the owning side of the relationship on purpose, so one User is only allowed to timestamp for one Employee
 	@JoinColumn(name = "employee_id")
+    @JsonBackReference
     private Employee employee;
 
     protected UserAccount() {}

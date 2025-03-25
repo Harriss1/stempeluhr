@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import de.karlk.timetracker.employee.Employee;
 import jakarta.annotation.Nonnull;
 import jakarta.annotation.Nullable;
@@ -54,6 +59,7 @@ public class WorkSession implements Serializable {
 	// assigned employee
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "employee_id")
+	@JsonManagedReference
 	private Employee employee;
 
 	@Getter
@@ -61,6 +67,7 @@ public class WorkSession implements Serializable {
 
 	@Getter
 	@Nullable
+	@JsonInclude(Include.NON_NULL)
 	private ZonedDateTime endTimeStamp;
 
 	@Getter
@@ -123,6 +130,7 @@ public class WorkSession implements Serializable {
 		return Duration.ofSeconds(ZonedDateTime.now().toEpochSecond() - start);
 	}
 
+	@JsonIgnore
 	public Duration getTotalDuration() {
 		if (endTimeStamp == null) {
 			throw new IllegalStateException("Die Gesamtzeit kann erst nach Beendigung der Schicht ermittelt werden.");
@@ -132,6 +140,7 @@ public class WorkSession implements Serializable {
 		return Duration.ofSeconds(end - start);
 	}
 
+	@JsonIgnore
 	public Duration getNetDuration() {
 		return getTotalDuration().minus(breakDuration);
 	}

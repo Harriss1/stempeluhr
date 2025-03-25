@@ -25,7 +25,7 @@ import org.springframework.test.context.TestPropertySource;
 import de.karlk.timetracker.employee.Employee;
 import de.karlk.timetracker.employee.EmployeeRepository;
 import de.karlk.timetracker.employee.UserAccount;
-import de.karlk.timetracker.employee.UserRepository;
+import de.karlk.timetracker.employee.UserAccountRepository;
 import de.karlk.timetracker.worksession.LegalShiftType;
 import de.karlk.timetracker.worksession.WorkSession;
 import de.karlk.timetracker.worksession.WorkSessionService;
@@ -55,7 +55,7 @@ public class TimeMeasurementTests {
 	private TestEntityManager entityManager;
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserAccountRepository userRepository;
 
 	@Autowired
 	private EmployeeRepository employeeRepository;

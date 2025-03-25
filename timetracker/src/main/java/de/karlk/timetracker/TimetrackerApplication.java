@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import de.karlk.timetracker.employee.Employee;
 import de.karlk.timetracker.employee.EmployeeRepository;
 import de.karlk.timetracker.employee.UserAccount;
-import de.karlk.timetracker.employee.UserRepository;
+import de.karlk.timetracker.employee.UserAccountRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
@@ -26,7 +26,7 @@ public class TimetrackerApplication {
 	}
 
 	@Bean
-	CommandLineRunner createDemoUser(UserRepository userRepo, EmployeeRepository employeeRepo) {
+	CommandLineRunner createDemoUser(UserAccountRepository userRepo, EmployeeRepository employeeRepo) {
 		return (args) -> {
 			UserAccount demo = new UserAccount("DemoUser");
 			Employee max = new Employee("Max", "Muster");

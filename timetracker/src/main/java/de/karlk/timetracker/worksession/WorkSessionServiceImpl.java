@@ -24,8 +24,7 @@ class WorkSessionServiceImpl implements WorkSessionService {
 	public WorkSession createAndStartWorkSessionNowFor(Employee employee) {
 		WorkSession session = new WorkSession(employee);
 		session.startNow();
-		workSessionRepo.saveAndFlush(session);
-		return session;
+		return workSessionRepo.saveAndFlush(session);
 	}
 
 	@Override

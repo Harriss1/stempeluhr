@@ -19,7 +19,7 @@ import org.springframework.test.context.TestPropertySource;
 import de.karlk.timetracker.employee.Employee;
 import de.karlk.timetracker.employee.EmployeeRepository;
 import de.karlk.timetracker.employee.UserAccount;
-import de.karlk.timetracker.employee.UserRepository;
+import de.karlk.timetracker.employee.UserAccountRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @TestPropertySource(
@@ -38,7 +38,7 @@ public class UserAccountTests {
     private TestEntityManager entityManager;
     
     @Autowired
-    private UserRepository userRepository;
+    private UserAccountRepository userRepository;
     
     @Autowired
     private EmployeeRepository employeeRepository;
@@ -59,9 +59,8 @@ public class UserAccountTests {
 	@ParameterizedTest
 	@ValueSource(strings = {"Marius", "Nadine"})
     void missingEmployeeIsNull(String name) {
-		int actualSize = userRepository.findByName(name).size();
-		int expectedSize = 0;
-        assertEquals(expectedSize, actualSize, "Der Benutzer dürfte nicht existieren.");
+		var searchResults = userRepository.findByName(name);
+        assertEquals(0, searchResults.size(), "Der Benutzer dürfte nicht existieren.");
     }
 	
 	@Test

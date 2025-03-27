@@ -14,30 +14,33 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 @RestController
 public class UserAccountController {
-	@Autowired UserAccountRepository userAccountRepository;
-	
+	@Autowired
+	UserAccountRepository userAccountRepository;
+
 	@GetMapping("/userAccounts")
-	List<UserAccount> allNotRestful(){
+	List<UserAccount> allNotRestful() {
 		return userAccountRepository.findAll();
 	}
-	
+
 	@GetMapping("/users")
-	CollectionModel<EntityModel<UserAccount>> all(){
-		List<EntityModel<UserAccount>> users = userAccountRepository.findAll().stream().map(userAccount -> EntityModel.of(userAccount,
-				linkTo(methodOn(UserAccountController.class).one(userAccount.getName())).withSelfRel(),
-				linkTo(methodOn(UserAccountController.class).all()).withRel("users")))
+	CollectionModel<EntityModel<UserAccount>> all() {
+		List<EntityModel<UserAccount>> users = userAccountRepository.findAll() //
+				.stream() //
+				.map(userAccount -> EntityModel.of(userAccount, //
+						linkTo(methodOn(UserAccountController.class).one(userAccount.getName())).withSelfRel(),
+						linkTo(methodOn(UserAccountController.class).all()).withRel("users")))
 				.collect(Collectors.toList());
-		
+
 		return CollectionModel.of(users, linkTo(methodOn(UserAccountController.class).all()).withSelfRel());
 	}
-	
+
 	@GetMapping("/users/{userAccountName}")
-	EntityModel<UserAccount> one(@PathVariable String userAccountName){
-		
+	EntityModel<UserAccount> one(@PathVariable String userAccountName) {
+
 		UserAccount acc = userAccountRepository.findFirstByName(userAccountName)
 				.orElseThrow(() -> new UserAccountNotFoundException(userAccountName));
-		
-		return EntityModel.of(acc, 
+
+		return EntityModel.of(acc, //
 				linkTo(methodOn(UserAccountController.class).one(userAccountName)).withSelfRel(),
 				linkTo(methodOn(UserAccountController.class).all()).withRel("users"));
 	}

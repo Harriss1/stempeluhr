@@ -16,6 +16,8 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 public class UserAccountController {
 	@Autowired
 	UserAccountRepository userAccountRepository;
+	@Autowired
+	UserAccountAssembler userAccountAssembler;
 
 	@GetMapping("/userAccounts")
 	List<UserAccount> allNotRestful() {
@@ -26,9 +28,7 @@ public class UserAccountController {
 	CollectionModel<EntityModel<UserAccount>> all() {
 		List<EntityModel<UserAccount>> users = userAccountRepository.findAll() //
 				.stream() //
-				.map(userAccount -> EntityModel.of(userAccount, //
-						linkTo(methodOn(UserAccountController.class).one(userAccount.getName())).withSelfRel(),
-						linkTo(methodOn(UserAccountController.class).all()).withRel("users")))
+				.map(userAccountAssembler::toModel) // new for me, read up: https://www.baeldung.com/java-method-references
 				.collect(Collectors.toList());
 
 		return CollectionModel.of(users, linkTo(methodOn(UserAccountController.class).all()).withSelfRel());
@@ -36,12 +36,9 @@ public class UserAccountController {
 
 	@GetMapping("/users/{userAccountName}")
 	EntityModel<UserAccount> one(@PathVariable String userAccountName) {
-
-		UserAccount acc = userAccountRepository.findFirstByName(userAccountName)
+		UserAccount userAccount = userAccountRepository.findFirstByName(userAccountName)
 				.orElseThrow(() -> new UserAccountNotFoundException(userAccountName));
 
-		return EntityModel.of(acc, //
-				linkTo(methodOn(UserAccountController.class).one(userAccountName)).withSelfRel(),
-				linkTo(methodOn(UserAccountController.class).all()).withRel("users"));
+		return userAccountAssembler.toModel(userAccount);
 	}
 }

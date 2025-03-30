@@ -14,6 +14,8 @@ public interface UserAccountRepository extends JpaRepository<UserAccount, Long> 
 	 * <p>should be changed as soon as best practises in this regard are known
 	 */
 	List<UserAccount> findByName(String name);
+	
+	// new for me, did read: https://www.oracle.com/technical-resources/articles/java/java8-optional.html
 	Optional<UserAccount> findFirstByName(String name);
 
 }

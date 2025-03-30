@@ -28,7 +28,7 @@ public class UserAccountController {
 	CollectionModel<EntityModel<UserAccount>> all() {
 		List<EntityModel<UserAccount>> users = userAccountRepository.findAll() //
 				.stream() //
-				.map(userAccountAssembler::toModel) // new for me, read up: https://www.baeldung.com/java-method-references
+				.map(userAccountAssembler::toModel) // new for me, did read: https://www.baeldung.com/java-method-references
 				.collect(Collectors.toList());
 
 		return CollectionModel.of(users, linkTo(methodOn(UserAccountController.class).all()).withSelfRel());

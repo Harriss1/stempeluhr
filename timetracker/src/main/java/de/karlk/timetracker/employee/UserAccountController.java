@@ -19,10 +19,10 @@ public class UserAccountController {
 	@Autowired
 	UserAccountAssembler userAccountAssembler;
 
-	@GetMapping("/userAccounts")
-	List<UserAccount> allNotRestful() {
-		return userAccountRepository.findAll();
-	}
+//	@GetMapping("/userAccounts")
+//	List<UserAccount> allNotRestful() {
+//		return userAccountRepository.findAll();
+//	}
 
 	@GetMapping("/users")
 	CollectionModel<EntityModel<UserAccount>> all() {

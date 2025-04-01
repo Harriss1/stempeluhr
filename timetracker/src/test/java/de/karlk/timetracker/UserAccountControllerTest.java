@@ -3,6 +3,7 @@ package de.karlk.timetracker;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -24,15 +25,30 @@ public class UserAccountControllerTest {
 
 	@Autowired
 	private UserAccountRepository userAccountRepository;
-	@Test
-	public void givenDemoUser_whenGetUsers_thenStatus200() throws Exception {
+	
+	@BeforeEach
+	public void givenDemoUser() {
 		if(userAccountRepository.findByName(TimetrackerApplication.DEMO_USER_NAME).size() < 1) {
 			throw new IllegalStateException("'DemoUser' Account muss existieren für Tests");
 		}
-		
+	}
+	
+	@Test
+	public void whenGetUsers_thenStatus200() throws Exception {
 		mvc.perform(get("/users").contentType(MediaType.APPLICATION_JSON)) //
-				.andExpect(status().isOk()) //
+				.andExpect(status().isOk());
+	}
+	
+	@Test
+	public void whenGetUsers_thenDemoUserIsIncluded() throws Exception {
+		mvc.perform(get("/users").contentType(MediaType.APPLICATION_JSON)) //
 				.andExpect(MockMvcResultMatchers.jsonPath("$..[0].name").value(TimetrackerApplication.DEMO_USER_NAME));
+	}
+	
+	@Test
+	public void whenGetOneUser_thenStatus200() throws Exception {
+		mvc.perform(get("/users/" + TimetrackerApplication.DEMO_USER_NAME).contentType(MediaType.APPLICATION_JSON)) //
+				.andExpect(status().isOk());
 	}
 
 }

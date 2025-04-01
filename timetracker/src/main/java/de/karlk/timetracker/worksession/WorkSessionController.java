@@ -15,7 +15,7 @@ public class WorkSessionController {
 	@Autowired WorkSessionService workSessionService;
 	
 	@PostMapping("/users/{userAccountName}/worksessions")
-	WorkSession createWorkSession(@PathVariable String userAccountName){
+	WorkSession create(@PathVariable String userAccountName){
 		UserAccount userAccount = userAccountRepository.findByName(userAccountName).get(0);
 		var employee = userAccount.getEmployee();
 		return workSessionService.createAndStartWorkSessionNowFor(employee);

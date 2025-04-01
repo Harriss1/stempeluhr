@@ -1,6 +1,14 @@
 # Timetracker
 
-*Referenz: https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/*
+## Design Ziel
+
+Level 3 REST-API gemäß https://en.wikipedia.org/wiki/Richardson_Maturity_Model
+
+## Referenz-Quellen
+
+1. https://ics.uci.edu/~fielding/pubs/dissertation/top.htm
+2. https://stackoverflow.blog/2020/03/02/best-practices-for-rest-api-design/
+3. https://spring.io/guides/tutorials/rest (Verstößt aber teilweise gegen REST, da Verben in URL vorkommen, eine Ressource aber nur durch Ressourcen manipuliert werden darf gem. Fielding.)
 
 ## Testdaten
 
@@ -19,20 +27,54 @@ Sollte der Benutzer sich einloggen, und ist es ergo nicht nötig eine WorkSessio
 - gibt die ```sessionId``` zurück der erstellten WorkSession
 - führt zu einer Fehlermeldung, falls eine vorherige WorkSession noch nicht beendet wurde
 
-### Einen aktiven Zeiterfassungseintrag stoppen - WIP
-- PATCH timetracker.de/users/:name/worksessions/:sessionId
-- PATCH timetracker.de/users/:name/worksessions/?firstEntryAfter=:ZonedDateTime
+### Einen aktiven Zeiterfassungseintrag stoppen
 - nicht existierende oder bereits beendete WorkSessions führen zu einer Fehlermeldung
-- POST timetracker.de/users/:name/worksessions/:sessionId/status_changes - payload: {status:finished}
+- POST timetracker.de/users/:name/worksessions/:sessionId/status-changes - Payload: {status:finished}
+  - oder POST timetracker.de/users/:name/worksessions/?firstEntryAfter=:ZonedDateTime/status-changes
+- erlaubt später im Endpunkt "status-changes" neue Stati einzuarbeiten, z.B. der Workflow: Erstellt > Gestartet > Pausiert > Beendet > Offen-für-Kontrolle > Akzeptiert
 
-#### Problemstellung
+#### recherchierte Problemstellung: Verb in URL nutzen?
 
 1. Komplexe Aktionen erfordern ein Verb, dass nicht den üblichen HTML-Operationen (GET, POST, PUT, DEL) entspricht.
 2. Was nutze ich, sobald es für eine Ressource zwei Operationen gibt? Z.B. "Zeit stoppen" und "Zeit pausieren".
 3. Ausführliche Recherche führt zu keinen logisch begründeten Vorgehen, die Argumente sind immer fadenscheinig warum ein Verb nicht im Pfad verwendet werden sollte. Es gibt keine guten REST-API Beispiele, die weithin als gut Referenz angesehen wird.
 > "Avoid verbs in URLs" wird nur begründet mit "a resource must be identifiable by an URL". Hier gibt es aber nie Referenzen, und eine URL kann ja immer nur auf eine Ressource zeigen, aber umgedreht darf es natürlich URLs geben, die keiner Resource entsprechen.
 
-#### Lösungsansatz: benutzerfreundlich
+**Entscheidung: Definitiv Ressourcen-Substantiv nutzen (end-timestamp oder status-changes), um Flexiblität für spätere Änderungen zu erhalten indem REST-getreut gearbeitet wird.**
+
+*Ausführliche Erörterung der Lösungsansätze: [Recherche zu Substantiv oder Verben für komplexe Aktionen](#recherche-zu-substantiv-oder-verben-für-komplexe-aktionen)*
+
+### Einen spezifischen Zeiterfassungseintrag auslesen
+- GET timetracker.de/users/:name/worksessions/:sessionId
+- GET timetracker.de/users/:name/worksessions/?firstEntryAfter=:ZonedDateTime
+- nicht existierende WorkSessions führen zu einer Fehlermeldung
+
+### Einen spezifischen Zeiterfassungseintrag aktualisieren oder löschen
+- PUT/DELETE timetracker.de/users/:name/worksessions/:sessionId
+- PUT/DELETE timetracker.de/users/:name/worksessions/?firstEntryAfter=:ZonedDateTime
+- nicht existierende WorkSessions führen zu einer Fehlermeldung
+- offen: nicht beendete WorkSessions führen zu einer Fehlermeldung bei Aktualisierung/Löschung?
+
+### Langfristige Überlegungen zu Abfragen von Sets
+- Einzelne Sessions sollte nicht mittels ```GET timetracker.de/users/:name/worksessions/:year/:month/:day/:hour/:minute``` gesucht werden
+  - Grund: Was ist, wenn es mehrere Sessions an einem Tag gibt? Außerdem führt es zu einem tiefen Nesting.
+- Mehrere Sessions sollten per Filter-Queries gesucht werden: ```GET timetracker.de/users/:name/worksessions&year=:year&month=:month```
+
+## API-Modell Diagramm
+
+![api-diagramm](./docu/timetracker-rest-api.png)
+
+## ERD
+
+![datamodell-diagramm](./docu/timetracker-datamodell.png)
+
+## Erster Entwurf Datenmodell
+
+![datamodell-diagramm](./docu/timetracker-datamodell-draft.png)
+
+## Recherche zu Substantiv oder Verben für komplexe Aktionen
+
+### Lösungsansatz: benutzerfreundlich
 
 - Eine Aktion für eine Resource ist immer dann mit einem Verb am Ende der URL zu versehen, falls es keine Standard HTML-Operation gibt.
 - Standard-HTML-Operationen sind ausschließlich GET POST PUT DELETE, und ausnahmsweise PATCH.
@@ -46,7 +88,7 @@ Sollte der Benutzer sich einloggen, und ist es ergo nicht nötig eine WorkSessio
   - --> Was ist wenn wir mehrere Wahrheitswerte haben? z.B. not_started -> in_progress -> paused -> in_progress -> finished 
   - Ich finde diese Art von Manipulation nur schwer übertragbar in ein Link-Schema. z.B. ```"rel:pause", "link:/status/", "method:PUT", "in_progress:false", "paused:true", "finished:false"```
 
-#### Lösungsansatz: REST-API getreut
+### Lösungsansatz: REST-API getreut
 
 *Roy Fieldings Disseration on REST:*
 
@@ -83,33 +125,5 @@ describe those bytes.
   - intuitiver finde ich /worksessions/:id/start-timestamp und /worksessions/:id/end-timestamp
   - worksessions/:id/status-changes ist aber wesentlich skalierbarer, insofern es irgendwann manuelle Pausen geben sollte
   - Da die Pausen berechnet werden müssen, ist immer die Ressource "worksession" Pflicht, es gibt keine sinnvolle Möglichkeit ohne eine klare Definition der Arbeitsschicht die Pausenzeit zu berechnen.
-- Entscheidung: ```POST /users/:name/worksessions/:id/end-timestamp``` lößt das Problem, aber GET&PUT für start-timestamp und end-timestamp sollten der Uniformität halber implementiert werden.
+- Idee: ```POST /users/:name/worksessions/:id/end-timestamp``` lößt das Problem, aber GET&PUT für start-timestamp und end-timestamp sollten der Uniformität halber implementiert werden.
 - Falls Pausenzeiten manuell eingepflegbar werden sollten, ist die Subressource /breakstimestamps möglich
-
-### Einen spezifischen Zeiterfassungseintrag auslesen
-- GET timetracker.de/users/:name/worksessions/:sessionId
-- GET timetracker.de/users/:name/worksessions/?firstEntryAfter=:ZonedDateTime
-- nicht existierende WorkSessions führen zu einer Fehlermeldung
-
-### Einen spezifischen Zeiterfassungseintrag aktualisieren oder löschen
-- PUT/DELETE timetracker.de/users/:name/worksessions/:sessionId
-- PUT/DELETE timetracker.de/users/:name/worksessions/?firstEntryAfter=:ZonedDateTime
-- nicht existierende WorkSessions führen zu einer Fehlermeldung
-- offen: nicht beendete WorkSessions führen zu einer Fehlermeldung bei Aktualisierung/Löschung?
-
-### Langfristige Überlegungen zu Abfragen von Sets
-- Einzelne Sessions sollte nicht mittels ```GET timetracker.de/users/:name/worksessions/:year/:month/:day/:hour/:minute``` gesucht werden
-  - Grund: Was ist, wenn es mehrere Sessions an einem Tag gibt? Außerdem führt es zu einem tiefen Nesting.
-- Mehrere Sessions sollten per Filter-Queries gesucht werden: ```GET timetracker.de/users/:name/worksessions&year=:year&month=:month```
-
-## API-Modell Diagramm
-
-![api-diagramm](./docu/timetracker-rest-api.png)
-
-## ERD
-
-![datamodell-diagramm](./docu/timetracker-datamodell.png)
-
-## Erster Entwurf Datenmodell
-
-![datamodell-diagramm](./docu/timetracker-datamodell-draft.png)

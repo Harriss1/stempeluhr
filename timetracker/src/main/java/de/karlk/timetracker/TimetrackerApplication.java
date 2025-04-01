@@ -24,11 +24,13 @@ public class TimetrackerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TimetrackerApplication.class, args);
 	}
+	
+	public static final String DEMO_USER_NAME="DemoUser";
 
 	@Bean
 	CommandLineRunner createDemoUser(UserAccountRepository userRepo, EmployeeRepository employeeRepo) {
 		return (args) -> {
-			UserAccount demo = new UserAccount("DemoUser");
+			UserAccount demo = new UserAccount(DEMO_USER_NAME);
 			Employee max = new Employee("Max", "Muster");
 			employeeRepo.save(max);
 			demo.setEmployee(max);

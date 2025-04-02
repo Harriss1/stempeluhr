@@ -3,12 +3,14 @@ package de.karlk.timetracker.worksession;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import de.karlk.timetracker.employee.Employee;
 import de.karlk.timetracker.employee.EmployeeRepository;
+import de.karlk.timetracker.employee.UserAccount;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
@@ -34,8 +36,8 @@ class WorkSessionServiceImpl implements WorkSessionService {
 	}
 
 	@Override
-	public void saveWorkSession(WorkSession session) {
-		workSessionRepo.saveAndFlush(session);
+	public WorkSession saveWorkSession(WorkSession session) {
+		return workSessionRepo.saveAndFlush(session);
 	}
 
 	@Override
@@ -62,6 +64,17 @@ class WorkSessionServiceImpl implements WorkSessionService {
 		if(sessions.size() == 0)
 			throw new IllegalArgumentException("Es gibt für "+ employee.getUserAccount().getName() +" keine Messungen nach " + searchStartingPoint.toString());
 		return sessions.get(0);
+	}
+
+	@Override
+	public List<WorkSession> getAll(String userAccountname) {
+		// TODO Suche von Worksessions einzelner User 
+		return workSessionRepo.findAll();
+	}
+
+	@Override
+	public Optional<WorkSession> findById(long id) {
+		return workSessionRepo.findById(id);
 	}
 
 }

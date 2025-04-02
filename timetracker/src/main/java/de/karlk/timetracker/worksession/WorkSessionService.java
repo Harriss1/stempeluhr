@@ -2,8 +2,13 @@ package de.karlk.timetracker.worksession;
 
 import java.time.Duration;
 import java.time.ZonedDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.hateoas.EntityModel;
 
 import de.karlk.timetracker.employee.Employee;
+import de.karlk.timetracker.employee.UserAccount;
 
 public interface WorkSessionService {
 	
@@ -11,7 +16,7 @@ public interface WorkSessionService {
 
 	void finishNowAndSaveWorkSession(WorkSession session);
 
-	void saveWorkSession(WorkSession session);
+	WorkSession saveWorkSession(WorkSession session);
 
 	/**
 	 * Adds up the net amount of work durations of all worksessions in the given timespan.
@@ -28,4 +33,8 @@ public interface WorkSessionService {
 	 * @throws IllegalArgumentException if there are no worksessions found
 	 */
 	WorkSession findFirstWorkSessionAfter(ZonedDateTime searchStartingPoint, Employee employee) throws IllegalArgumentException;
+
+	List<WorkSession> getAll(String userAccountName);
+
+	Optional<WorkSession> findById(long id);
 }

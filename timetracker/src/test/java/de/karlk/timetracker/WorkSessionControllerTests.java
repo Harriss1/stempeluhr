@@ -7,6 +7,7 @@ import java.time.ZonedDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -25,21 +26,21 @@ import de.karlk.timetracker.worksession.WorkSessionService;
  * 
  * WIP-Versuch im TDD-Stil
  */
-
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = TimetrackerApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(locations = "classpath:application-integrationtest.properties")
-
 public class WorkSessionControllerTests {
 
 	@Autowired
 	private MockMvc mvc;
+	
 	@Autowired
-	private WorkSessionService workSessionService;
+	WorkSessionService workSessionService;
 
 	@Autowired
 	UserAccountRepository userAccountRepository;
-
+	
+	
 	private UserAccount getDemoUser() {
 		return userAccountRepository.findByName(TimetrackerApplication.DEMO_USER_NAME).get(0);
 	}
@@ -52,7 +53,14 @@ public class WorkSessionControllerTests {
 			throw new IllegalStateException("'DemoUser' Account muss existieren für Tests");
 		}
 	}
-
+	
+	void createWorkSession(ZonedDateTime start, Duration duration) {
+		WorkSession session = new WorkSession(getDemoUser().getEmployee());
+		session.setStartTimeStamp(start);
+		session.setEndTimeStamp(start.plus(duration));
+		workSessionService.saveWorkSession(session);
+	}
+	
 	@Test
 	void givenWorkSession_getAllWorkSessions_includesWorkSession() throws Exception {
 		createWorkSession(ZonedDateTime.parse("2019-10-20T07:30:00+02:00"), Duration.ofHours(9));
@@ -62,10 +70,13 @@ public class WorkSessionControllerTests {
 			.andExpect(MockMvcResultMatchers.jsonPath("$..[1].endTimeStamp").value("2019-10-20T16:30:00+02:00"));
 	}
 
-	WorkSession createWorkSession(ZonedDateTime start, Duration duration) {
-		WorkSession session = new WorkSession(getDemoUser().getEmployee());
-		session.setStartTimeStamp(start);
-		session.setEndTimeStamp(start.plus(duration));
-		return workSessionService.saveWorkSession(session);
+
+	@Test
+	void givenWorkSession_getWorkSession_returnsWorkSession() throws Exception {
+		createWorkSession(ZonedDateTime.parse("2019-12-24T07:30:00+02:00"), Duration.ofHours(9));
+		
+		mvc.perform(get("/users/DemoUser/worksessions/2").contentType(MediaType.APPLICATION_JSON)) //
+			.andExpect(MockMvcResultMatchers.jsonPath("$..startTimeStamp").value("2019-12-24T07:30:00+02:00"))//
+			.andExpect(MockMvcResultMatchers.jsonPath("$..endTimeStamp").value("2019-12-24T16:30:00+02:00"));
 	}
 }

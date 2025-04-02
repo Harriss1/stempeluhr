@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 import de.karlk.timetracker.employee.Employee;
 
 @Repository
-interface WorkSessionRepository extends JpaRepository<WorkSession, Long> {
+public interface WorkSessionRepository extends JpaRepository<WorkSession, Long> {
 	
 	List<WorkSession> findByStartTimeStampAfterAndEmployeeOrderByStartTimeStampAsc(ZonedDateTime searchStartingPoint, Employee employee);
 

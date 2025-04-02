@@ -1,5 +1,8 @@
 package de.karlk.timetracker;
 
+import java.time.Duration;
+import java.time.ZonedDateTime;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,6 +15,8 @@ import de.karlk.timetracker.employee.Employee;
 import de.karlk.timetracker.employee.EmployeeRepository;
 import de.karlk.timetracker.employee.UserAccount;
 import de.karlk.timetracker.employee.UserAccountRepository;
+import de.karlk.timetracker.worksession.WorkSession;
+import de.karlk.timetracker.worksession.WorkSessionService;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
@@ -28,7 +33,7 @@ public class TimetrackerApplication {
 	public static final String DEMO_USER_NAME="DemoUser";
 
 	@Bean
-	CommandLineRunner createDemoUser(UserAccountRepository userRepo, EmployeeRepository employeeRepo) {
+	CommandLineRunner createDemoData(UserAccountRepository userRepo, EmployeeRepository employeeRepo, WorkSessionService workSessionService) {
 		return (args) -> {
 			UserAccount demo = new UserAccount(DEMO_USER_NAME);
 			Employee max = new Employee("Max", "Muster");
@@ -42,6 +47,12 @@ public class TimetrackerApplication {
 				log.info(u.toString());
 			});
 			log.info("");
+			
+			WorkSession session = new WorkSession(max);
+			var start = ZonedDateTime.parse("2024-06-25T10:30:00+02:00");
+			session.setStartTimeStamp(start);
+			session.setEndTimeStamp(start.plus(Duration.ofHours(8)));
+			workSessionService.saveWorkSession(session);
 		};
 	}
 }

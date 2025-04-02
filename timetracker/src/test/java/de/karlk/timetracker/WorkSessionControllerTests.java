@@ -3,7 +3,6 @@ package de.karlk.timetracker;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 
 import java.time.Duration;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -59,8 +58,8 @@ public class WorkSessionControllerTests {
 		createWorkSession(ZonedDateTime.parse("2019-10-20T07:30:00+02:00"), Duration.ofHours(9));
 		
 		mvc.perform(get("/users/DemoUser/worksessions").contentType(MediaType.APPLICATION_JSON)) //
-			.andExpect(MockMvcResultMatchers.jsonPath("$..[0].startTimeStamp").value("2019-10-20T07:30:00+02:00"))//
-			.andExpect(MockMvcResultMatchers.jsonPath("$..[0].endTimeStamp").value("2019-10-20T16:30:00+02:00"));
+			.andExpect(MockMvcResultMatchers.jsonPath("$..[1].startTimeStamp").value("2019-10-20T07:30:00+02:00"))//
+			.andExpect(MockMvcResultMatchers.jsonPath("$..[1].endTimeStamp").value("2019-10-20T16:30:00+02:00"));
 	}
 
 	WorkSession createWorkSession(ZonedDateTime start, Duration duration) {

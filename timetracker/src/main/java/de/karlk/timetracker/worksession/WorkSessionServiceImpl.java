@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import de.karlk.timetracker.employee.Employee;
 import de.karlk.timetracker.employee.EmployeeRepository;
-import de.karlk.timetracker.employee.UserAccount;
 import lombok.extern.slf4j.Slf4j;
 
 @Service

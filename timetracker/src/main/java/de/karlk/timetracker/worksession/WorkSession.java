@@ -126,8 +126,7 @@ public class WorkSession implements Serializable {
 	}
 
 	public Duration getElapsedDuration() {
-		long start = startTimeStamp.toEpochSecond();
-		return Duration.ofSeconds(ZonedDateTime.now().toEpochSecond() - start);
+		return Duration.between(startTimeStamp, ZonedDateTime.now());
 	}
 
 	@JsonIgnore
@@ -135,9 +134,7 @@ public class WorkSession implements Serializable {
 		if (endTimeStamp == null) {
 			throw new IllegalStateException("Die Gesamtzeit kann erst nach Beendigung der Schicht ermittelt werden.");
 		}
-		long end = endTimeStamp.toEpochSecond();
-		long start = startTimeStamp.toEpochSecond();
-		return Duration.ofSeconds(end - start);
+		return Duration.between(startTimeStamp, endTimeStamp);
 	}
 
 	@JsonIgnore

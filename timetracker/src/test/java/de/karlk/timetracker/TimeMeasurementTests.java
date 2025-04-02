@@ -173,6 +173,7 @@ public class TimeMeasurementTests {
 	@MethodSource("getTestDataShiftDurations")
 	void calculatesCorrectLegalNetDuration_forTotalShiftDuration(Duration shiftDurationWithBreak,
 			Duration expectedBreakDuration) {
+		// TODO Hier sollten nicht Pausenzeiten getestet werden, sondern die Gesamtzeit der Schicht 
 		var employee = getTrainingAccount().getEmployee();
 		ZonedDateTime searchStartingPoint = ZonedDateTime.now().minus(shiftDurationWithBreak).minusMinutes(1);
 		WorkSession session = sessionService.createAndStartWorkSessionNowFor(employee);
@@ -272,7 +273,7 @@ public class TimeMeasurementTests {
 			return;
 		legalBoundaryValueTestDataPersisted = true;
 		var employee = getTrainingAccount().getEmployee();
-		// TODO UTC+1 muss für komplette Testumgebung zentral festgelegt werden
+		// TODO UTC+1 sollte für komplette Testumgebung zentral festgelegt werden
 		ZonedDateTime testDataSetStartingDay = ZonedDateTime.of(2015, 3, 12, 8, 0, 0, 0, ZoneId.of("UTC+1"));
 		persistShiftsByBoundaryValueAnalysis(3, employee, testDataSetStartingDay);
 	}

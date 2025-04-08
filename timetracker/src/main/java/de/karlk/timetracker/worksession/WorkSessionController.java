@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RestController;
 import de.karlk.timetracker.employee.UserAccount;
 import de.karlk.timetracker.employee.UserAccountNotFoundException;
 import de.karlk.timetracker.employee.UserAccountRepository;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
+@Slf4j
 public class WorkSessionController {
 	
 	@Autowired UserAccountRepository userAccountRepository;
@@ -46,8 +48,17 @@ public class WorkSessionController {
 	@GetMapping("/users/{userAccountName}/worksessions/{worksessionId}")
 	EntityModel<WorkSession> one(@PathVariable String userAccountName, @PathVariable String worksessionId) {
 		validate(userAccountName);
-		WorkSession session = workSessionService.findById(Long.parseLong(worksessionId)) //
-				.orElseThrow(null);
+		long id = Long.parseLong(worksessionId);
+		log.info("ID:" + id);
+		WorkSession session2 = workSessionService.findById(id).orElse(null);
+		if(session2 == null) log.warn("session not found");
+		log.info("all sessions in database:");
+		workSessionService.findAll().forEach(w -> {
+			log.info("worksession id:" + w.getId());
+		});
+		
+		WorkSession session = workSessionService.findById(id) //
+				.orElseThrow(() -> new WorkSessionNotFoundException(worksessionId));
 
 		return workSessionAssembler.toModel(session);
 	}

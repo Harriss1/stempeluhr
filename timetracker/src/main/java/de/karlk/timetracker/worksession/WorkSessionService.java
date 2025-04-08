@@ -5,10 +5,7 @@ import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.hateoas.EntityModel;
-
 import de.karlk.timetracker.employee.Employee;
-import de.karlk.timetracker.employee.UserAccount;
 
 public interface WorkSessionService {
 	
@@ -37,4 +34,6 @@ public interface WorkSessionService {
 	List<WorkSession> getAll(String userAccountName);
 
 	Optional<WorkSession> findById(long id);
+
+	List<WorkSession> findAll();
 }

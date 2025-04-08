@@ -20,7 +20,7 @@ import de.karlk.timetracker.worksession.WorkSessionService;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootApplication
-@ComponentScan({"de.karlk*"})
+@ComponentScan({ "de.karlk*" })
 @EntityScan("de.karlk*")
 @EnableJpaRepositories("de.karlk*")
 @Slf4j
@@ -29,30 +29,33 @@ public class TimetrackerApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(TimetrackerApplication.class, args);
 	}
-	
-	public static final String DEMO_USER_NAME="DemoUser";
+
+	public static final String DEMO_USER_NAME = "DemoUser";
 
 	@Bean
-	CommandLineRunner createDemoData(UserAccountRepository userRepo, EmployeeRepository employeeRepo, WorkSessionService workSessionService) {
+	CommandLineRunner createDemoData(UserAccountRepository userRepo, EmployeeRepository employeeRepo,
+			WorkSessionService workSessionService) {
 		return (args) -> {
 			UserAccount demo = new UserAccount(DEMO_USER_NAME);
 			Employee max = new Employee("Max", "Muster");
-			employeeRepo.save(max);
-			demo.setEmployee(max);
-			userRepo.saveAndFlush(demo);
+			if (userRepo.findByName(demo.getName()).size() == 0) {
+				employeeRepo.save(max);
+				demo.setEmployee(max);
+				userRepo.saveAndFlush(demo);
 
-			log.info("Employees found with findAll():");
-			log.info("-------------------------------");
-			userRepo.findAll().forEach(u -> {
-				log.info(u.toString());
-			});
-			log.info("");
-			
-			WorkSession session = new WorkSession(max);
-			var start = ZonedDateTime.parse("2024-06-25T10:30:00+02:00");
-			session.setStartTimeStamp(start);
-			session.setEndTimeStamp(start.plus(Duration.ofHours(8)));
-			workSessionService.saveWorkSession(session);
+				log.info("Employees found with findAll():");
+				log.info("-------------------------------");
+				userRepo.findAll().forEach(u -> {
+					log.info(u.toString());
+				});
+				log.info("");
+
+				WorkSession session = new WorkSession(max);
+				var start = ZonedDateTime.parse("2024-06-25T10:30:00+02:00");
+				session.setStartTimeStamp(start);
+				session.setEndTimeStamp(start.plus(Duration.ofHours(8)));
+				workSessionService.saveWorkSession(session);
+			}
 		};
 	}
 }

@@ -76,4 +76,8 @@ class WorkSessionServiceImpl implements WorkSessionService {
 		return workSessionRepo.findById(id);
 	}
 
+	@Override
+	public List<WorkSession> findAll(){
+		return workSessionRepo.findAll();
+	}
 }
